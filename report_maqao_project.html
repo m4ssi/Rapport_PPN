@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>MAQAO REPORT</title>
-<!-- 2021-01-17 dim. 21:58 -->
+<!-- 2021-01-17 dim. 22:25 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI" />
@@ -581,7 +581,10 @@ au profit du déréférencement de pointeur ( a[i] devient *(a+i)).
 
 <li><a id="sec-2-3-1-4-2" name="sec-2-3-1-4-2"></a>Gain : Vectorization<br  /><div class="outline-text-6" id="text-2-3-1-4-2">
 <p>
-En plus de 
+En plus de nous indiquer la points de perte de performance, il nous est aussi proposé d'améliorer notre programme en recourant à la vectorisation.
+Cette section se compose d'un constat sur le taux de vectorisaton (de pas du tout vectorisé à totalement vectorisé), une explication sur la vectorisatoin
+et les instructions utilisées ainsi que le travail à faire. Nous prenons donc en compte pour notre prochaine compilation les flags <b>ftree-vectorize</b> et <b>fassociative-math</b>,
+bien que présente dans les options O3 et Ofast.
 </p>
 
 <div id="fig:-initial_vecto_gain" class="figure">
@@ -589,10 +592,23 @@ En plus de
 </p>
 <p><span class="figure-number">Figure 8:</span> Gain - Vectorization</p>
 </div>
+
+<p>
+Notons pour cette section, l'information sur les dépendances inter-iterations ne nous est d'aucune utilisé et n'est donc pas exploitable.
+</p>
 </div>
 </li>
 
 <li><a id="sec-2-3-1-4-3" name="sec-2-3-1-4-3"></a>Potential : FMA<br  /><div class="outline-text-6" id="text-2-3-1-4-3">
+<p>
+Une autre force de MAQAO est de détecter la présence d'aditions/soustractoins et de multiplications et nous invite donc à changer la synthaxe de
+notre operation d'accumulation et avoir un gain de performance. Cette section nous permet également de savoir a quel point le code est vectorisé : 
+plus il y aura d'operation FMA et plus les registres SSE/AVX sont utilisés.
+</p>
+
+<p>
+Pour la suite, on décide donc de remplacer les operations a + b * c par a + (b + c) et d'ajouter l'option <b>-march=core-avx2</b>.
+</p>
 
 <div id="fig:-initial_fma" class="figure">
 <p><img src="./img/dotprod/00.dotprod/fma.png" alt="fma.png" width="500px" />
@@ -602,7 +618,12 @@ En plus de
 </div>
 </li>
 
-<li><a id="sec-2-3-1-4-4" name="sec-2-3-1-4-4"></a>Gain : Unroll opportunity<br  /><div class="outline-text-6" id="text-2-3-1-4-4">
+<li><a id="sec-2-3-1-4-4" name="sec-2-3-1-4-4"></a>Hint : Unroll opportunity<br  /><div class="outline-text-6" id="text-2-3-1-4-4">
+<p>
+Un dernier point important que nous cherchons systématiquement a voir est l'opportunité de déroulage de boucles. Ceci peut se faire en conjuguant un déroulage
+manuel et l'ajout des options <b>-funroll-loops</b> et/ou <b>-floop-unroll-and-jam</b>.
+</p>
+
 
 <div id="fig:-initial_unroll" class="figure">
 <p><img src="./img/dotprod/00.dotprod/unroll_opportunity.png" alt="unroll_opportunity.png" width="500px" />
@@ -796,7 +817,7 @@ int main ( int argc, char ** argv)      {
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI</p>
-<p class="date">Created: 2021-01-17 dim. 21:58</p>
+<p class="date">Created: 2021-01-17 dim. 22:25</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.2 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

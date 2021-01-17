@@ -213,20 +213,33 @@ au profit du déréférencement de pointeur ( a[i] devient *(a+i)).
 
 ***** Gain : Vectorization
 
-En plus de 
+En plus de nous indiquer la points de perte de performance, il nous est aussi proposé d'améliorer notre programme en recourant à la vectorisation.
+Cette section se compose d'un constat sur le taux de vectorisaton (de pas du tout vectorisé à totalement vectorisé), une explication sur la vectorisatoin
+et les instructions utilisées ainsi que le travail à faire. Nous prenons donc en compte pour notre prochaine compilation les flags *ftree-vectorize* et *fassociative-math*,
+bien que présente dans les options O3 et Ofast.
      #+CAPTION: Gain - Vectorization
      #+NAME: fig: initial_vecto_gain
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/vectorization.png]]
+
+Notons pour cette section, l'information sur les dépendances inter-iterations ne nous est d'aucune utilisé et n'est donc pas exploitable.
      
 ***** Potential : FMA
 
+Une autre force de MAQAO est de détecter la présence d'aditions/soustractoins et de multiplications et nous invite donc à changer la synthaxe de
+notre operation d'accumulation et avoir un gain de performance. Cette section nous permet également de savoir a quel point le code est vectorisé : 
+plus il y aura d'operation FMA et plus les registres SSE/AVX sont utilisés.
+
+Pour la suite, on décide donc de remplacer les operations a + b * c par a + (b + c) et d'ajouter l'option *-march=core-avx2*.
      #+CAPTION: Potential - FMA
      #+NAME: fig: initial_fma
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/fma.png]]
 
-***** Gain : Unroll opportunity
+***** Hint : Unroll opportunity
+
+Un dernier point important que nous cherchons systématiquement a voir est l'opportunité de déroulage de boucles. Ceci peut se faire en conjuguant un déroulage
+manuel et l'ajout des options *-funroll-loops* et/ou *-floop-unroll-and-jam*.
 
      #+CAPTION: Gain - Unroll opportunity
      #+NAME: fig: initial_unroll
