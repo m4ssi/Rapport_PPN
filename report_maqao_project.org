@@ -158,7 +158,6 @@ A cette étape, nous allons prendre en compte la suggestion des flags [O2, O3, O
 A l'étape initiale, cette section ne nous est pas d'une grande utilité si ce n'est nous indiqué la micro-architecture de la machine cible ainsi que les flags que *gcc* ajoute
 à notre place. Notre que la section précédente nous indiquait que l'option -march était manquant alors que celle-ci nous indique que -march=x86-64 a été indiquée.
 
-
 **** Application
 
 La section Application et plus particulièrement Detailed Application Categorization nous indique la couverture des différentes partie de notre code (code utilisateur, noyau, librairie externe, maths, etc ...)
@@ -173,16 +172,39 @@ Dans le cas du dotprod avec des vecteurs mis à 1, la totalité du programme s'e
 
 **** LOOPS
 
+Maintenant que nous savons que notre code est optimisable et que les speed-ups potentiels sont interessant, nous allons nous intéresser au boucles à améliorer
+et pouvoir découvrir les amélirations possibles.
+
 ***** Loops index
+
+On regarde tout d'abord un tableau récapitulatif les boucles que nous devrons optimiser et pour mieux guider nos améliration (fixer une echelle de priorité pour un code possedant
+plusieurs boucles à optimiser), on affiche le temps d'exécution de chacun ainsi que les speed-ups sur les types d'améliorationsa faire, suivant que les résultats affichés par le
+tableau global. On choisit donc d'afficher les speed-ups si FP vectorisé et Totalement vectorisé.
 
      #+CAPTION: Initial Loops Index
      #+NAME: fig: initial_loops_index
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/loops_index.png]]
 
+On constate qu'une boucle à une couverture de 99% et on décide donc de commencer par celle-la. On affiche donc son rapport *CQA*
 
+**** Rapport *CQA*
+
+Le rapport CQA se présente comme le montre la figure suivante :
+
+     #+CAPTION: Rapport CQA de la boucle Loop_0
+     #+NAME: fig: cqa_loop_0
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/cqa_main.png]]
+
+On peut voir le code source de la boucle sur la gauche et les améliorations a effectuer dessus sur la droite. Nous allons réaliser chacune des
+modificatoins demandée lorsque cela est possible afin de pouvoir constater dans une analyse ultérieur si notre programme est optimisé.
 
 ***** Gain : Code clean check
+
+Un motif de perte de performance que nous avons pu observer sur la totalité des programmes analysés (écrits en C/C++) est la présence
+d'instructions scalaires sur entier généralement causées par le calcul d'adressage. Nous decidons donc de ne plus utiliser l'opérateur []
+au profit du déréférencement de pointeur ( a[i] devient *(a+i)). 
 
      #+CAPTION: Gain - Code clean check
      #+NAME: fig: initial_clean_check
@@ -191,6 +213,7 @@ Dans le cas du dotprod avec des vecteurs mis à 1, la totalité du programme s'e
 
 ***** Gain : Vectorization
 
+En plus de 
      #+CAPTION: Gain - Vectorization
      #+NAME: fig: initial_vecto_gain
      #+ATTR_HTML: :width 500px
@@ -203,13 +226,13 @@ Dans le cas du dotprod avec des vecteurs mis à 1, la totalité du programme s'e
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/fma.png]]
 
-
 ***** Gain : Unroll opportunity
 
      #+CAPTION: Gain - Unroll opportunity
      #+NAME: fig: initial_unroll
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/unroll_opportunity.png]]
+
 
 *** Etape 2 : 
 
