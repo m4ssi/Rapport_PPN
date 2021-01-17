@@ -7,10 +7,6 @@
 
 ** Présentation de l'outil MAQAO
 ** SIMD/Vectorisation
-
-***  Principe de la vectorisation
-*** Jeux d'instructions SSE et AVX 
-
 ** Flags d'optimisation des compilateurs
 
 |-------------------------+-----------+-----------------------------------------------------------------------|
@@ -30,7 +26,6 @@
 |                         | core-avx2 |                                                                       |
 |                         | x86-64    |                                                                       |
 | -mtune=                 | native    |                                                                       |
-| -fassociative-math      |           |                                                                       |
 |-------------------------+-----------+-----------------------------------------------------------------------|
 
 *  ABC-MAQAO sur un cas simple : *dotprod*
@@ -39,6 +34,8 @@ Afin de réaliser ce projet, une étape clé était de comprendre et d'apprendre
 benchmark deja vu en cours : le *dotprod*. L'idée était de faire le travail d'optimisation un maximum de fois depuis la version de base afin 
 d'identifier les informations récurrentes et exploitable qui nous étaient produites. Une fois ces sections identifiées, une chaine de production
 d'un binaire (processus d'optimisation) a été mise en place et expliqué dans cette section.
+
+Les résultats obtenus lors de cette analyse peuvent être retrouvés sur ce dépôt : [[Dépot contenant les RUNS et les sources du dotprod][https://github.com/m4ssi/Dotprod]]
 
 ** Chaine de production d'un binaire : 
 
@@ -61,6 +58,9 @@ La chaine de production mise en oeuvre, schématisée par la figure 1, se dérou
 
 *** Makefile
 
+Comme on peut le voir sur le Makefile suivant, notre programme est compilé sans aucune optimisation
+afin de commencer notre analyse depuis le début.
+
 #+BEGIN_SRC make
 all: 00.dotprod
 
@@ -70,6 +70,10 @@ all: 00.dotprod
 #+END_SRC
 
 *** *dotprod.c*
+
+Une particularité du dotprod ci-après présenté est qu'il nous permet de fixer une taille de vecteur en Bytes
+et de boucler sur la fonciton principale afin de pouvoir jouer sur le temps d'exécution de notre programme d'une part
+et ainsi mieux voir la performance gagné.
 
 #+BEGIN_SRC c
 double dotprod(double *restrict a, double *restrict b, unsigned long long n)	{
@@ -123,38 +127,60 @@ int main ( int argc, char ** argv)	{
 *** Etape initial : 00.dotprod
 
 En premier lieu, on effecture une analyse du binaire obtenu avec uniquement les flags permettant à *MAQAO* de faire son analyse. On exploite alors
-les informations mises à notre disposition afin d'améliorer les performances de notre programme :
+les informations mises à notre disposition afin d'améliorer les performances de notre programme dans l'ordre suivant : 
 
-**** Global Metrics
+
+**** Index
+
+On commence notre analyse par la page d'accueil du rapport. Sur cette page, on retrouve des informations préliminaires qui nous permettent de savoir
+si un processus d'optimisation pourra nous permettre de gagner en performance ou non.
+
+***** Global Metrics
 
      #+CAPTION: Rubrique 'Global Metrics' initial
      #+NAME: fig: initial_global_metrics
      #+ATTR_HTML: :width 300px
      [[./img/dotprod/00.dotprod/global.png]]
 
+En observant les métriques globales du binaire analysé, on constate que celui-ci a été compilé sans flags d'optimisation ni de flags de spécification d'architecture.
+De plus, on voit que d'une part, nos accès mémoire sont efficaces à 75% (la valeur est bonne mais pourrait être amélioré) et des speed-up peuvent-être otbtenus si le
+programme est vectorisé à la compilation. Les possibilités d'améliorations seront présentées ultérieurement dans la rubrique *LOOPS* contenant l'essentiel des améliorations
+suggéré.
 
-**** Experiment Summary
+A cette étape, nous allons prendre en compte la suggestion des flags [O2, O3, Ofast], -march=target et -funroll-loops pour le prochain binaire à produire.
+***** Experiment Summary
 
      #+CAPTION: Rubrique 'Experiment Summary' initial
      #+NAME: fig: initial_experiment_summary
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/summary.png]]
 
-**** Detailed Application Categorization
+A l'étape initiale, cette section ne nous est pas d'une grande utilité si ce n'est nous indiqué la micro-architecture de la machine cible ainsi que les flags que *gcc* ajoute
+à notre place. Notre que la section précédente nous indiquait que l'option -march était manquant alors que celle-ci nous indique que -march=x86-64 a été indiquée.
+
+
+**** Application
+
+La section Application et plus particulièrement Detailed Application Categorization nous indique la couverture des différentes partie de notre code (code utilisateur, noyau, librairie externe, maths, etc ...)
+Elle nous permet d'avoir une première évaluation de la portion de code réellement optimisable (généralement Binary et Math) via les suggestions d'optimisation du module *CQA*
 
      #+CAPTION: Detailed Application Categorization
      #+NAME: fig: initial_application Categorization
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/application.png]]
 
-**** Loops index
+Dans le cas du dotprod avec des vecteurs mis à 1, la totalité du programme s'exécute au niveau du code utilisateur.
+
+**** LOOPS
+
+***** Loops index
 
      #+CAPTION: Initial Loops Index
      #+NAME: fig: initial_loops_index
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/loops_index.png]]
 
-**** Loops
+
 
 ***** Gain : Code clean check
 
@@ -184,6 +210,10 @@ les informations mises à notre disposition afin d'améliorer les performances d
      #+NAME: fig: initial_unroll
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/unroll_opportunity.png]]
+
+*** Etape 2 : 
+
+*** 
 
 ** Version finale optimisée
 
