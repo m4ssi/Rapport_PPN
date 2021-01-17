@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>MAQAO REPORT</title>
+<!-- 2021-01-17 dim. 20:34 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">MAQAO REPORT</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Introduction</a>
+<ul>
+<li><a href="#sec-1-1">1.1. Présentation de l'outil MAQAO</a></li>
+<li><a href="#sec-1-2">1.2. SIMD/Vectorisation</a>
+<ul>
+<li><a href="#sec-1-2-1">1.2.1. Principe de la vectorisation</a></li>
+<li><a href="#sec-1-2-2">1.2.2. Jeux d'instructions SSE et AVX</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-3">1.3. Flags d'optimisation des compilateurs</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2. ABC-MAQAO sur un cas simple : <b>dotprod</b></a>
+<ul>
+<li><a href="#sec-2-1">2.1. Chaine de production d'un binaire :</a></li>
+<li><a href="#sec-2-2">2.2. Code source</a>
+<ul>
+<li><a href="#sec-2-2-1">2.2.1. Makefile</a></li>
+<li><a href="#sec-2-2-2">2.2.2. <b>dotprod.c</b></a></li>
+</ul>
+</li>
+<li><a href="#sec-2-3">2.3. Déroulement du processur d'optimisation</a>
+<ul>
+<li><a href="#sec-2-3-1">2.3.1. Etape initial : 00.dotprod</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-4">2.4. Version finale optimisée</a>
+<ul>
+<li><a href="#sec-2-4-1">2.4.1. Makefile</a></li>
+<li><a href="#sec-2-4-2">2.4.2. <b>dotprod.c</b></a></li>
+<li><a href="#sec-2-4-3">2.4.3. Obersations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-3">3. Mini-Applications</a>
+<ul>
+<li><a href="#sec-3-1">3.1. HACC</a></li>
+<li><a href="#sec-3-2">3.2. miniqmc</a></li>
+<li><a href="#sec-3-3">3.3. NPB3.2.1-MZ</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Suggestions pour MAQAO</a></li>
+<li><a href="#sec-5">5. Conclusion</a>
+<ul>
+<li><a href="#sec-5-1">5.1. Optimisation grave a MAQAO</a></li>
+<li><a href="#sec-5-2">5.2. Perspectives</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6. Bibliographie</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Présentation de l'outil MAQAO</h3>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> SIMD/Vectorisation</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> Principe de la vectorisation</h4>
+</div>
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> Jeux d'instructions SSE et AVX</h4>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Flags d'optimisation des compilateurs</h3>
+<div class="outline-text-3" id="text-1-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">Flags</th>
+<th scope="col" class="left">Valeurs</th>
+<th scope="col" class="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">-g</td>
+<td class="left">&#xa0;</td>
+<td class="left">produit les informations de debug dans le format de l'OS</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">permet d'avoir le lien entre le binaire et le source</td>
+</tr>
+
+<tr>
+<td class="left">-fnp-omit-frame-pointer</td>
+<td class="left">&#xa0;</td>
+<td class="left">permet d'avoir les callchains avec les options par défaut du profiler</td>
+</tr>
+
+<tr>
+<td class="left">-O2</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">-O3</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">-Ofast</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">-funroll-loops</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">-fassociative-math</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">-ftree-vectorize</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">-floop-unroll-and-jam</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">-march=</td>
+<td class="left">native</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">core-avx2</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">x86-64</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">-mtune=</td>
+<td class="left">native</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">-fassociative-math</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> ABC-MAQAO sur un cas simple : <b>dotprod</b></h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Afin de réaliser ce projet, une étape clé était de comprendre et d'apprendre à utiliser <b>MAQAO</b>. Pour cela, nous avons cherché à optimiser un
+benchmark deja vu en cours : le <b>dotprod</b>. L'idée était de faire le travail d'optimisation un maximum de fois depuis la version de base afin 
+d'identifier les informations récurrentes et exploitable qui nous étaient produites. Une fois ces sections identifiées, une chaine de production
+d'un binaire (processus d'optimisation) a été mise en place et expliqué dans cette section.
+</p>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Chaine de production d'un binaire :</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+La chaine de production mise en oeuvre, schématisée par la figure 1, se déroule telle que :
+</p>
+
+<ol class="org-ol">
+<li>Compilation sans options de compilation
+</li>
+<li>Analyse du binaire obtenu 
+</li>
+<li>Recompilation du programme avec les options suggérés et avec O2, O3 ou Ofast (généralement Ofast - passage en 7)
+</li>
+<li>Analyse des trois binaire obtenu
+</li>
+<li>Si les suggestions faites sont differentes pour les trois : retour en 3
+</li>
+<li>Sinon : choix du meilleur flags (compromis entre le temps d'exécution et taille du binaire) puis 7
+</li>
+<li>Application des recommandations et analyse jusqu'a trouver une limite
+
+
+<div id="fig:-optimization_process" class="figure">
+<p><img src="./img/inter_process.png" alt="inter_process.png" width="600px" />
+</p>
+<p><span class="figure-number">Figure 1:</span> Processur iteratif d'optimisation à l'aide de MAQAO</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Code source</h3>
+<div class="outline-text-3" id="text-2-2">
+</div><div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> Makefile</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<div class="org-src-container">
+
+<pre class="src src-make">all: 00.dotprod
+
+00.dotprod:
+	gcc -Wall -g -fno-omit-frame-pointer -O0 -o $@ $@.c
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> <b>dotprod.c</b></h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+
+<pre class="src src-c">double dotprod(double *restrict a, double *restrict b, unsigned long long n)    {
+	double d = 0.0;
+	for ( unsigned long long i = 0; i &lt; n; i++)
+		d += a[i] * b[i];
+	return d;       
+}
+
+void fill_vector (double *restrict vect, unsigned long long n)  {
+	for (unsigned long long i = 0; i &lt; n; i++)
+		vect[i] = 1;
+}
+
+int main ( int argc, char ** argv)      {
+	if ( argc == 1) return 1;
+
+	// Size of vectors
+	unsigned long long n = atoll ( argv[1]);
+	unsigned long long n_b = n/sizeof(double);
+
+	// Allocate memory for vectors
+	double  * a = malloc ( n),
+		* b = malloc ( n),
+		res = 0.0;
+
+	// Init vector values           
+	fill_vector ( a, n_b);
+	fill_vector ( b, n_b);
+
+
+	// Doing a dotprod
+	for ( int i = 0; i &lt; 10000; i++)
+		res = dotprod ( a, b, n_b);
+
+
+	// Free memory
+	free ( a);
+	free ( b);
+
+	// Print dotprod result
+	printf ("Res : %lf\n", res);
+
+	return 0;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Déroulement du processur d'optimisation</h3>
+<div class="outline-text-3" id="text-2-3">
+</div><div id="outline-container-sec-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1"><span class="section-number-4">2.3.1</span> Etape initial : 00.dotprod</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+En premier lieu, on effecture une analyse du binaire obtenu avec uniquement les flags permettant à <b>MAQAO</b> de faire son analyse. On exploite alors
+les informations mises à notre disposition afin d'améliorer les performances de notre programme :
+</p>
+</div>
+
+<ol class="org-ol"><li><a id="sec-2-3-1-1" name="sec-2-3-1-1"></a>Global Metrics<br  /><div class="outline-text-5" id="text-2-3-1-1">
+
+<div id="fig:-initial_global_metrics" class="figure">
+<p><img src="./img/dotprod/00.dotprod/global.png" alt="global.png" width="300px" />
+</p>
+<p><span class="figure-number">Figure 2:</span> Rubrique 'Global Metrics' initial</p>
+</div>
+</div>
+</li>
+
+
+<li><a id="sec-2-3-1-2" name="sec-2-3-1-2"></a>Experiment Summary<br  /><div class="outline-text-5" id="text-2-3-1-2">
+
+<div id="fig:-initial_experiment_summary" class="figure">
+<p><img src="./img/dotprod/00.dotprod/summary.png" alt="summary.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 3:</span> Rubrique 'Experiment Summary' initial</p>
+</div>
+</div>
+</li>
+
+<li><a id="sec-2-3-1-3" name="sec-2-3-1-3"></a>Detailed Application Categorization<br  /><div class="outline-text-5" id="text-2-3-1-3">
+
+<div id="fig:-initial_application-Categorization" class="figure">
+<p><img src="./img/dotprod/00.dotprod/application.png" alt="application.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 4:</span> Detailed Application Categorization</p>
+</div>
+</div>
+</li>
+
+<li><a id="sec-2-3-1-4" name="sec-2-3-1-4"></a>Loops index<br  /><div class="outline-text-5" id="text-2-3-1-4">
+
+<div id="fig:-initial_loops_index" class="figure">
+<p><img src="./img/dotprod/00.dotprod/loops_index.png" alt="loops_index.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 5:</span> Initial Loops Index</p>
+</div>
+</div>
+</li>
+
+<li><a id="sec-2-3-1-5" name="sec-2-3-1-5"></a>Loops<br  /><ol class="org-ol"><li><a id="sec-2-3-1-5-1" name="sec-2-3-1-5-1"></a>Gain : Code clean check<br  /><div class="outline-text-6" id="text-2-3-1-5-1">
+
+<div id="fig:-initial_clean_check" class="figure">
+<p><img src="./img/dotprod/00.dotprod/code_clean_check.png" alt="code_clean_check.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 6:</span> Gain - Code clean check</p>
+</div>
+</div>
+</li>
+
+<li><a id="sec-2-3-1-5-2" name="sec-2-3-1-5-2"></a>Gain : Vectorization<br  /><div class="outline-text-6" id="text-2-3-1-5-2">
+
+<div id="fig:-initial_vecto_gain" class="figure">
+<p><img src="./img/dotprod/00.dotprod/vectorization.png" alt="vectorization.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 7:</span> Gain - Vectorization</p>
+</div>
+</div>
+</li>
+
+<li><a id="sec-2-3-1-5-3" name="sec-2-3-1-5-3"></a>Potential : FMA<br  /><div class="outline-text-6" id="text-2-3-1-5-3">
+
+<div id="fig:-initial_fma" class="figure">
+<p><img src="./img/dotprod/00.dotprod/fma.png" alt="fma.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 8:</span> Potential - FMA</p>
+</div>
+</div>
+</li>
+
+
+<li><a id="sec-2-3-1-5-4" name="sec-2-3-1-5-4"></a>Gain : Unroll opportunity<br  /><div class="outline-text-6" id="text-2-3-1-5-4">
+
+<div id="fig:-initial_unroll" class="figure">
+<p><img src="./img/dotprod/00.dotprod/unroll_opportunity.png" alt="unroll_opportunity.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 9:</span> Gain - Unroll opportunity</p>
+</div>
+</div>
+</li></ol>
+</li></ol>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> Version finale optimisée</h3>
+<div class="outline-text-3" id="text-2-4">
+</div><div id="outline-container-sec-2-4-1" class="outline-4">
+<h4 id="sec-2-4-1"><span class="section-number-4">2.4.1</span> Makefile</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<div class="org-src-container">
+
+<pre class="src src-make">all: 03.dotprod
+
+03.dotprod:
+	gcc -Wall -g -fno-omit-frame-pointer -Ofast -march=native -funroll-loops -floop-unroll-and-jam -ftree-vectorize -fassociative-math -march=core-avx2 -o $@ $@.c
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4-2" class="outline-4">
+<h4 id="sec-2-4-2"><span class="section-number-4">2.4.2</span> <b>dotprod.c</b></h4>
+<div class="outline-text-4" id="text-2-4-2">
+<div class="org-src-container">
+
+<pre class="src src-c">double dotprod(double *restrict a, double *restrict b, unsigned long long n)    {
+	double d = 0.0;
+	for ( unsigned long long i = 0; i &lt; n; i++)     {
+		d += ( *(a+i) * *(b+i) );
+	}
+	return d;       
+}
+
+void fill_vector (double *restrict vect, unsigned long long n)  {
+	for (unsigned long long i = 0; i &lt; n; i+=4)     {
+		*(vect+i) = 1;
+		*(vect+i+1) = 1;
+		*(vect+i+2) = 1;
+		*(vect+i+3) = 1;
+	}
+}
+
+int main ( int argc, char ** argv)      {
+	if ( argc == 1) return 1;
+
+	// Size of vectors
+	unsigned long long n = atoll ( argv[1]);
+	unsigned long long n_b = n/sizeof(double);
+
+	printf ("%llu\n", n);
+
+	// Allocate memory for vectors
+	double  * p_a = NULL,
+		* p_b = NULL;
+	int ret = 0;
+	ret +=posix_memalign ((void **)  &amp;p_a, 32, n);
+	ret += posix_memalign ((void **) &amp;p_b, 32, n);
+	if ( ret) return 2;             
+	double  * a = __builtin_assume_aligned(p_a, 32),
+		* b = __builtin_assume_aligned(p_b, 32),
+		res = 0.0;
+
+	// Init vector values           
+	fill_vector ( a, n_b);
+	fill_vector ( b, n_b);
+
+
+	// Doing a dotprod
+	for ( int i = 0; i &lt; 10000; i++)
+		res = dotprod ( a, b, n_b);
+
+
+	// Free memory
+	free ( a);
+	free ( b);
+
+	// Print dotprod result
+	printf ("Res : %lf\n", res);
+
+	return 0;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4-3" class="outline-4">
+<h4 id="sec-2-4-3"><span class="section-number-4">2.4.3</span> Obersations</h4>
+<div class="outline-text-4" id="text-2-4-3">
+</div><ol class="org-ol"><li><a id="sec-2-4-3-1" name="sec-2-4-3-1"></a>Informations non-exploitées<br  /><div class="outline-text-5" id="text-2-4-3-1">
+
+<div id="fig:-useless0" class="figure">
+<p><img src="./img/dotprod/00.dotprod/useless0.png" alt="useless0.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 10:</span> Useless0</p>
+</div>
+
+
+<div id="fig:-useless1" class="figure">
+<p><img src="./img/dotprod/00.dotprod/useless1.png" alt="useless1.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 11:</span> Useless1</p>
+</div>
+</div>
+</li></ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Mini-Applications</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> HACC</h3>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> miniqmc</h3>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> NPB3.2.1-MZ</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Suggestions pour MAQAO</h2>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Conclusion</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> Optimisation grave a MAQAO</h3>
+</div>
+
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> Perspectives</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Bibliographie</h2>
+<div class="outline-text-2" id="text-6">
+<ol class="org-ol">
+<li><a href="http://www.maqao.org/">http://www.maqao.org/</a>
+</li>
+<li><a href="http://www.maqao.org/release/MAQAO_QuickReferenceSheet_V9.pdf">http://www.maqao.org/release/MAQAO_QuickReferenceSheet_V9.pdf</a>
+</li>
+<li><a href="http://www.maqao.org/release/MAQAO.Tutorial.ONEVIEW.pdf">http://www.maqao.org/release/MAQAO.Tutorial.ONEVIEW.pdf</a>
+</li>
+<li><a href="https://fr.wikipedia.org/wiki/Streaming_SIMD_Extensions">https://fr.wikipedia.org/wiki/Streaming_SIMD_Extensions</a>
+</li>
+<li><a href="https://fr.wikipedia.org/wiki/Advanced_Vector_Extensions">https://fr.wikipedia.org/wiki/Advanced_Vector_Extensions</a> 
+</li>
+<li><a href="https://gcc.gnu.org/">https://gcc.gnu.org/</a>
+</li>
+<li><a href="https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gcc/">https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gcc/</a>
+</li>
+<li><a href="https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gcc/Option-Summary.html#Option-Summary">https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gcc/Option-Summary.html#Option-Summary</a>
+</li>
+<li><a href="https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gcc/Optimize-Options.html#Optimize-Options">https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gcc/Optimize-Options.html#Optimize-Options</a>
+</li>
+<li><a href="https://www.nas.nasa.gov/assets/npb/NPB3.4.1-MZ.tar.gz">https://www.nas.nasa.gov/assets/npb/NPB3.4.1-MZ.tar.gz</a>
+</li>
+<li><a href="https://asc.llnl.gov/sites/asc/files/2020-09/haccmk.zip">https://asc.llnl.gov/sites/asc/files/2020-09/haccmk.zip</a>
+</li>
+<li><a href="https://github.com/QMCPACK/miniqmc">https://github.com/QMCPACK/miniqmc</a>
+</li>
+<li><a href="https://github.com/QMCPACK/miniqmc.git">https://github.com/QMCPACK/miniqmc.git</a>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI</p>
+<p class="date">Created: 2021-01-17 dim. 20:34</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.2 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

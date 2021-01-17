@@ -1,0 +1,303 @@
+#+TITLE: MAQAO REPORT
+#+AUTHOR: Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI
+
+*  Introduction
+
+
+
+** Présentation de l'outil MAQAO
+** SIMD/Vectorisation
+
+***  Principe de la vectorisation
+*** Jeux d'instructions SSE et AVX 
+
+** Flags d'optimisation des compilateurs
+
+|-------------------------+-----------+-----------------------------------------------------------------------|
+| Flags                   | Valeurs   | Description                                                           |
+|-------------------------+-----------+-----------------------------------------------------------------------|
+| -g                      |           | produit les informations de debug dans le format de l'OS              |
+|                         |           | permet d'avoir le lien entre le binaire et le source                  |
+| -fnp-omit-frame-pointer |           | permet d'avoir les callchains avec les options par défaut du profiler |
+| -O2                     |           |                                                                       |
+| -O3                     |           |                                                                       |
+| -Ofast                  |           |                                                                       |
+| -funroll-loops          |           |                                                                       |
+| -fassociative-math      |           |                                                                       |
+| -ftree-vectorize        |           |                                                                       |
+| -floop-unroll-and-jam   |           |                                                                       |
+| -march=                 | native    |                                                                       |
+|                         | core-avx2 |                                                                       |
+|                         | x86-64    |                                                                       |
+| -mtune=                 | native    |                                                                       |
+| -fassociative-math      |           |                                                                       |
+|-------------------------+-----------+-----------------------------------------------------------------------|
+
+*  ABC-MAQAO sur un cas simple : *dotprod*
+
+Afin de réaliser ce projet, une étape clé était de comprendre et d'apprendre à utiliser *MAQAO*. Pour cela, nous avons cherché à optimiser un
+benchmark deja vu en cours : le *dotprod*. L'idée était de faire le travail d'optimisation un maximum de fois depuis la version de base afin 
+d'identifier les informations récurrentes et exploitable qui nous étaient produites. Une fois ces sections identifiées, une chaine de production
+d'un binaire (processus d'optimisation) a été mise en place et expliqué dans cette section.
+
+** Chaine de production d'un binaire : 
+
+La chaine de production mise en oeuvre, schématisée par la figure 1, se déroule telle que :
+
+1) Compilation sans options de compilation
+2) Analyse du binaire obtenu 
+3) Recompilation du programme avec les options suggérés et avec O2, O3 ou Ofast (généralement Ofast - passage en 7)
+4) Analyse des trois binaire obtenu
+5) Si les suggestions faites sont differentes pour les trois : retour en 3
+6) Sinon : choix du meilleur flags (compromis entre le temps d'exécution et taille du binaire) puis 7
+7) Application des recommandations et analyse jusqu'a trouver une limite
+
+   #+CAPTION: Processur iteratif d'optimisation à l'aide de MAQAO
+   #+NAME: fig: optimization_process
+   #+ATTR_HTML: :width 600px
+   [[./img/inter_process.png]]
+
+** Code source
+
+*** Makefile
+
+#+BEGIN_SRC make
+all: 00.dotprod
+
+00.dotprod:
+	gcc -Wall -g -fno-omit-frame-pointer -O0 -o $@ $@.c
+	
+#+END_SRC
+
+*** *dotprod.c*
+
+#+BEGIN_SRC c
+double dotprod(double *restrict a, double *restrict b, unsigned long long n)	{
+	double d = 0.0;
+	for ( unsigned long long i = 0; i < n; i++)
+		d += a[i] * b[i];
+	return d;	
+}
+
+void fill_vector (double *restrict vect, unsigned long long n)	{
+	for (unsigned long long i = 0; i < n; i++)
+		vect[i] = 1;
+}
+
+int main ( int argc, char ** argv)	{
+	if ( argc == 1) return 1;
+	
+	// Size of vectors
+	unsigned long long n = atoll ( argv[1]);
+	unsigned long long n_b = n/sizeof(double);
+
+	// Allocate memory for vectors
+	double	* a = malloc ( n),
+		* b = malloc ( n),
+		res = 0.0;
+			
+	// Init vector values		
+	fill_vector ( a, n_b);
+	fill_vector ( b, n_b);
+	
+	
+	// Doing a dotprod
+	for ( int i = 0; i < 10000; i++)
+		res = dotprod ( a, b, n_b);
+
+
+	// Free memory
+	free ( a);
+	free ( b);
+
+	// Print dotprod result
+	printf ("Res : %lf\n", res);
+	
+	return 0;
+}
+
+#+END_SRC
+
+** Déroulement du processur d'optimisation
+
+*** Etape initial : 00.dotprod
+
+En premier lieu, on effecture une analyse du binaire obtenu avec uniquement les flags permettant à *MAQAO* de faire son analyse. On exploite alors
+les informations mises à notre disposition afin d'améliorer les performances de notre programme :
+
+**** Global Metrics
+
+     #+CAPTION: Rubrique 'Global Metrics' initial
+     #+NAME: fig: initial_global_metrics
+     #+ATTR_HTML: :width 300px
+     [[./img/dotprod/00.dotprod/global.png]]
+
+
+**** Experiment Summary
+
+     #+CAPTION: Rubrique 'Experiment Summary' initial
+     #+NAME: fig: initial_experiment_summary
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/summary.png]]
+
+**** Detailed Application Categorization
+
+     #+CAPTION: Detailed Application Categorization
+     #+NAME: fig: initial_application Categorization
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/application.png]]
+
+**** Loops index
+
+     #+CAPTION: Initial Loops Index
+     #+NAME: fig: initial_loops_index
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/loops_index.png]]
+
+**** Loops
+
+***** Gain : Code clean check
+
+     #+CAPTION: Gain - Code clean check
+     #+NAME: fig: initial_clean_check
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/code_clean_check.png]]
+
+***** Gain : Vectorization
+
+     #+CAPTION: Gain - Vectorization
+     #+NAME: fig: initial_vecto_gain
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/vectorization.png]]
+     
+***** Potential : FMA
+
+     #+CAPTION: Potential - FMA
+     #+NAME: fig: initial_fma
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/fma.png]]
+
+
+***** Gain : Unroll opportunity
+
+     #+CAPTION: Gain - Unroll opportunity
+     #+NAME: fig: initial_unroll
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/unroll_opportunity.png]]
+
+** Version finale optimisée
+
+*** Makefile
+
+#+BEGIN_SRC make
+all: 03.dotprod
+
+03.dotprod:
+	gcc -Wall -g -fno-omit-frame-pointer -Ofast -march=native -funroll-loops -floop-unroll-and-jam -ftree-vectorize -fassociative-math -march=core-avx2 -o $@ $@.c
+	
+#+END_SRC
+
+*** *dotprod.c*
+
+#+BEGIN_SRC c
+double dotprod(double *restrict a, double *restrict b, unsigned long long n)	{
+	double d = 0.0;
+	for ( unsigned long long i = 0; i < n; i++)	{
+		d += ( *(a+i) * *(b+i) );
+	}
+	return d;	
+}
+
+void fill_vector (double *restrict vect, unsigned long long n)	{
+	for (unsigned long long i = 0; i < n; i+=4)	{
+		*(vect+i) = 1;
+		*(vect+i+1) = 1;
+		*(vect+i+2) = 1;
+		*(vect+i+3) = 1;
+	}
+}
+
+int main ( int argc, char ** argv)	{
+	if ( argc == 1) return 1;
+	
+	// Size of vectors
+	unsigned long long n = atoll ( argv[1]);
+	unsigned long long n_b = n/sizeof(double);
+
+	printf ("%llu\n", n);
+
+	// Allocate memory for vectors
+	double	* p_a = NULL,
+		* p_b = NULL;
+	int ret = 0;
+	ret +=posix_memalign ((void **)  &p_a, 32, n);
+	ret += posix_memalign ((void **) &p_b, 32, n);
+	if ( ret) return 2;		
+	double	* a = __builtin_assume_aligned(p_a, 32),
+		* b = __builtin_assume_aligned(p_b, 32),
+		res = 0.0;
+			
+	// Init vector values		
+	fill_vector ( a, n_b);
+	fill_vector ( b, n_b);
+	
+	
+	// Doing a dotprod
+	for ( int i = 0; i < 10000; i++)
+		res = dotprod ( a, b, n_b);
+
+
+	// Free memory
+	free ( a);
+	free ( b);
+
+	// Print dotprod result
+	printf ("Res : %lf\n", res);
+	
+	return 0;
+}
+#+END_SRC
+
+*** Obersations
+
+**** Informations non-exploitées
+
+     #+CAPTION: Useless0
+     #+NAME: fig: useless0
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/useless0.png]]
+
+     #+CAPTION: Useless1
+     #+NAME: fig: useless1
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/00.dotprod/useless1.png]]
+
+*  Mini-Applications
+
+** HACC
+** miniqmc
+** NPB3.2.1-MZ
+
+*  Suggestions pour MAQAO
+
+*  Conclusion
+
+** Optimisation grave a MAQAO
+
+** Perspectives 
+
+*  Bibliographie
+
+1) http://www.maqao.org/
+2) http://www.maqao.org/release/MAQAO_QuickReferenceSheet_V9.pdf
+3) http://www.maqao.org/release/MAQAO.Tutorial.ONEVIEW.pdf
+4) https://fr.wikipedia.org/wiki/Streaming_SIMD_Extensions
+5) https://fr.wikipedia.org/wiki/Advanced_Vector_Extensions 
+6) https://gcc.gnu.org/
+7) https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gcc/
+8) https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gcc/Option-Summary.html#Option-Summary
+9) https://gcc.gnu.org/onlinedocs/gcc-7.5.0/gcc/Optimize-Options.html#Optimize-Options
+10) https://www.nas.nasa.gov/assets/npb/NPB3.4.1-MZ.tar.gz
+11) https://asc.llnl.gov/sites/asc/files/2020-09/haccmk.zip
+12) https://github.com/QMCPACK/miniqmc
+13) https://github.com/QMCPACK/miniqmc.git
