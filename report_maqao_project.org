@@ -3,30 +3,40 @@
 
 *  Introduction
 
-
-
 ** Présentation de l'outil MAQAO
+
+C’est un outil composé de trois principaux modules (LProf, CQA, ONE View), qui permet d’analyser et optimiser les performances de programmes HPC, il est indépendant du langage utilisé et il ne nécessite pas de recompilation grâce à sa capacité à fonctionner au niveau binaire, il est compatibles sur plusieurs architectures (intel  AMD Xeon Phi) .
+Il a pour objectif de guider les programmeurs à réaliser des applications optimisées en leur fournissant des rapports et des conseils détaillés tout au long du processus de développement.
+
+
 ** SIMD/Vectorisation
+
+La vectorisation  est un processus de conversion  qui exécute des instructions SSE & AVX qui sont des extensions de l’architecture du jeu d’instructions SIMD des microprocesseurs x86, ces instructions sont utilisées de façon scalaire ou vectorielle et permettent de lancer simultanément une mêmes instructions sur plusieurs données afin de produire les résultats attendus avec un coût d'exécution minimale.
+
 ** Flags d'optimisation des compilateurs
 
-|-------------------------+-----------+-----------------------------------------------------------------------|
-| Flags                   | Valeurs   | Description                                                           |
-|-------------------------+-----------+-----------------------------------------------------------------------|
-| -g                      |           | produit les informations de debug dans le format de l'OS              |
-|                         |           | permet d'avoir le lien entre le binaire et le source                  |
-| -fnp-omit-frame-pointer |           | permet d'avoir les callchains avec les options par défaut du profiler |
-| -O2                     |           |                                                                       |
-| -O3                     |           |                                                                       |
-| -Ofast                  |           |                                                                       |
-| -funroll-loops          |           |                                                                       |
-| -fassociative-math      |           |                                                                       |
-| -ftree-vectorize        |           |                                                                       |
-| -floop-unroll-and-jam   |           |                                                                       |
-| -march=                 | native    |                                                                       |
-|                         | core-avx2 |                                                                       |
-|                         | x86-64    |                                                                       |
-| -mtune=                 | native    |                                                                       |
-|-------------------------+-----------+-----------------------------------------------------------------------|
+|-------------------------+-----------+-------------------------------------------------------------------------------------------------|
+| Flags                   | Valeurs   | Description                                                                                     |
+|-------------------------+-----------+-------------------------------------------------------------------------------------------------|
+| -g                      |           | produit les informations de debug dans le format de l'OS                                        |
+|                         |           | permet d'avoir le lien entre le binaire et le source                                            |
+| -fnp-omit-frame-pointer |           | permet d'avoir les callchains avec les options par défaut du profiler                           |
+| -O2                     |           | produit un binaire légèrement optimisé                                                          |
+| -O3                     |           | produit un binaire optimisé                                                                     |
+| -Ofast                  |           | produit un binaire fortement optimisé                                                           |
+| -funroll-loops          |           | force le déroulage des boucles                                                                  |
+| -fassociative-math      |           | autorise la réassociatopn d'opérandes dans une série d'opération à virgule flottante            |
+| -ftree-vectorize        |           | effectue la vectorisation de boucle sur les arbres ? : activé par défaut avec -O3               |
+| -floop-unroll-and-jam   |           | non trouvée dans le manuel de GCC                                                               |
+| -march=                 | native    | indique au compilateur de produire un binaire qui correspond au processeur d'exécution du code  |
+|                         | core-avx2 |                                                                                                 |
+|                         | x86-64    |                                                                                                 |
+| -mtune=                 | native    | génère un code optimisé pour l'architecture cible tout en garantissant une retro-coçmpatibilité |
+| -finline-functions      |           | inline toutes les fonctions simples                                                             |
+| -flto                   |           | exécute l'optimiseur de temps de liaison                                                        |
+|                         |           |                                                                                                 |
+|-------------------------+-----------+-------------------------------------------------------------------------------------------------|
+
 
 *  ABC-MAQAO sur un cas simple : *dotprod*
 
@@ -129,6 +139,8 @@ int main ( int argc, char ** argv)	{
 En premier lieu, on effecture une analyse du binaire obtenu avec uniquement les flags permettant à *MAQAO* de faire son analyse. On exploite alors
 les informations mises à notre disposition afin d'améliorer les performances de notre programme dans l'ordre suivant : 
 
+
+Il est important de préciser que notre programme ne possède que deux boucles à optimiser et que les améliorations à faire sur la 2e boucle sont les mêmes que sur la première.
 
 **** Index
 
@@ -247,7 +259,10 @@ manuel et l'ajout des options *-funroll-loops* et/ou *-floop-unroll-and-jam*.
      [[./img/dotprod/00.dotprod/unroll_opportunity.png]]
 
 
+
 *** Etape 2 : 
+
+
 
 *** 
 

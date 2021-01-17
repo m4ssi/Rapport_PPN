@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>MAQAO REPORT</title>
-<!-- 2021-01-17 dim. 22:25 -->
+<!-- 2021-01-17 dim. 22:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI" />
@@ -198,10 +198,24 @@ for the JavaScript code in this tag.
 <div class="outline-text-2" id="text-1">
 </div><div id="outline-container-sec-1-1" class="outline-3">
 <h3 id="sec-1-1"><span class="section-number-3">1.1</span> Présentation de l'outil MAQAO</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+C’est un outil composé de trois principaux modules (LProf, CQA, ONE View), qui permet d’analyser et optimiser les performances de programmes HPC, il est indépendant du langage utilisé et il ne nécessite pas de recompilation grâce à sa capacité à fonctionner au niveau binaire, il est compatibles sur plusieurs architectures (intel  AMD Xeon Phi) .
+Il a pour objectif de guider les programmeurs à réaliser des applications optimisées en leur fournissant des rapports et des conseils détaillés tout au long du processus de développement.
+</p>
 </div>
+</div>
+
+
 <div id="outline-container-sec-1-2" class="outline-3">
 <h3 id="sec-1-2"><span class="section-number-3">1.2</span> SIMD/Vectorisation</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+La vectorisation  est un processus de conversion  qui exécute des instructions SSE &amp; AVX qui sont des extensions de l’architecture du jeu d’instructions SIMD des microprocesseurs x86, ces instructions sont utilisées de façon scalaire ou vectorielle et permettent de lancer simultanément une mêmes instructions sur plusieurs données afin de produire les résultats attendus avec un coût d'exécution minimale.
+</p>
 </div>
+</div>
+
 <div id="outline-container-sec-1-3" class="outline-3">
 <h3 id="sec-1-3"><span class="section-number-3">1.3</span> Flags d'optimisation des compilateurs</h3>
 <div class="outline-text-3" id="text-1-3">
@@ -244,49 +258,49 @@ for the JavaScript code in this tag.
 <tr>
 <td class="left">-O2</td>
 <td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="left">produit un binaire légèrement optimisé</td>
 </tr>
 
 <tr>
 <td class="left">-O3</td>
 <td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="left">produit un binaire optimisé</td>
 </tr>
 
 <tr>
 <td class="left">-Ofast</td>
 <td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="left">produit un binaire fortement optimisé</td>
 </tr>
 
 <tr>
 <td class="left">-funroll-loops</td>
 <td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="left">force le déroulage des boucles</td>
 </tr>
 
 <tr>
 <td class="left">-fassociative-math</td>
 <td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="left">autorise la réassociatopn d'opérandes dans une série d'opération à virgule flottante</td>
 </tr>
 
 <tr>
 <td class="left">-ftree-vectorize</td>
 <td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="left">effectue la vectorisation de boucle sur les arbres ? : activé par défaut avec -O3</td>
 </tr>
 
 <tr>
 <td class="left">-floop-unroll-and-jam</td>
 <td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="left">non trouvée dans le manuel de GCC</td>
 </tr>
 
 <tr>
 <td class="left">-march=</td>
 <td class="left">native</td>
-<td class="left">&#xa0;</td>
+<td class="left">indique au compilateur de produire un binaire qui correspond au processeur d'exécution du code</td>
 </tr>
 
 <tr>
@@ -304,6 +318,24 @@ for the JavaScript code in this tag.
 <tr>
 <td class="left">-mtune=</td>
 <td class="left">native</td>
+<td class="left">génère un code optimisé pour l'architecture cible tout en garantissant une retro-coçmpatibilité</td>
+</tr>
+
+<tr>
+<td class="left">-finline-functions</td>
+<td class="left">&#xa0;</td>
+<td class="left">inline toutes les fonctions simples</td>
+</tr>
+
+<tr>
+<td class="left">-flto</td>
+<td class="left">&#xa0;</td>
+<td class="left">exécute l'optimiseur de temps de liaison</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
 <td class="left">&#xa0;</td>
 </tr>
 </tbody>
@@ -311,6 +343,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
+
 
 <div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2"><span class="section-number-2">2</span> ABC-MAQAO sur un cas simple : <b>dotprod</b></h2>
@@ -452,8 +485,12 @@ int main ( int argc, char ** argv)      {
 En premier lieu, on effecture une analyse du binaire obtenu avec uniquement les flags permettant à <b>MAQAO</b> de faire son analyse. On exploite alors
 les informations mises à notre disposition afin d'améliorer les performances de notre programme dans l'ordre suivant : 
 </p>
-</div>
 
+
+<p>
+Il est important de préciser que notre programme ne possède que deux boucles à optimiser et que les améliorations à faire sur la 2e boucle sont les mêmes que sur la première.
+</p>
+</div>
 
 <ol class="org-ol"><li><a id="sec-2-3-1-1" name="sec-2-3-1-1"></a>Index<br  /><div class="outline-text-5" id="text-2-3-1-1">
 <p>
@@ -636,9 +673,12 @@ manuel et l'ajout des options <b>-funroll-loops</b> et/ou <b>-floop-unroll-and-j
 </div>
 
 
+
 <div id="outline-container-sec-2-3-2" class="outline-4">
 <h4 id="sec-2-3-2"><span class="section-number-4">2.3.2</span> Etape 2 :</h4>
 </div>
+
+
 
 <div id="outline-container-sec-2-3-3" class="outline-4">
 <h4 id="sec-2-3-3"><span class="section-number-4">2.3.3</span> </h4>
@@ -817,7 +857,7 @@ int main ( int argc, char ** argv)      {
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI</p>
-<p class="date">Created: 2021-01-17 dim. 22:25</p>
+<p class="date">Created: 2021-01-17 dim. 22:40</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.2 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
