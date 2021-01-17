@@ -308,12 +308,30 @@ manuel et l'ajout des options *-funroll-loops* et/ou *-floop-unroll-and-jam*.
      #+CAPTION: 01.dotprod : Taux de vectorisation
      #+NAME: fig: 01.dotprod_vecto
      #+ATTR_HTML: :width 500px
-     [[./img/dotprod/01.dotprod/vectorization.png]]
-
-
+     [[./img/dotprod/02.dotprod/vectorization.png]]
 
 *** Etape finale : 03.ditprod 
 
+     #+CAPTION: Rubrique 'Global Metrics' finale
+     #+NAME: fig: final_global_metrics
+     #+ATTR_HTML: :width 300px
+     [[./img/dotprod/03.dotprod/last_global.png]]
+
+     #+CAPTION: 'Loops Index' finale
+     #+NAME: fig: final_index
+     #+ATTR_HTML: :width 900px
+     [[./img/dotprod/03.dotprod/last_loops_index.png]]
+
+     #+CAPTION: Dernier rapport CQA
+     #+NAME: fig: last_cqa
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/03.dotprod/last_gain.png]]
+
+     #+CAPTION: Preuve de la vectorisation
+     #+NAME: fig: proof_vecto
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/03.dotprod/proof_vecto.png]]
+     
 ** Version finale optimisée
 
 *** Makefile
@@ -407,13 +425,44 @@ int main ( int argc, char ** argv)	{
 ** miniqmc
 ** NPB3.2.1-MZ
 
+
 *  Suggestions pour MAQAO
 
 *  Conclusion
 
 ** Optimisation grace a MAQAO
 
-** Perspectives 
+** Perspectives d'améliorations
+
+Le principal objectif de ce projet étant de trouver des améliorations pour *MAQAO* et non améliorer les applications, ce document, qui se trouve
+être un rapport sur comment un groupe d'étudiant à du se familiariser avec, s'en servir pour optimiser des programmes ainsi que d'apprendre de 
+nouvelles techniques de programmation, constitue un feed-back et pourrait permettre des améliorations en analysant nos apprioris et postulats.
+
+A cela s'ajoute des suggestions qui nous sont venues lors du processus iteratif, énuméré ci-après:
+
+*** Indiquer les options de compilations utilisés par binaire
+
+Lors de l'analyse du programme *HACC*, on a du compiler séparement 3 fichiers. Pour avancer progressivement dans on amélioratoin, on s'est concentré sur un seul ficher
+dans un premier lieu. On s'est alors rendu compte que *MAQAO* indiquait "OK" pour les options de compilations alors que seul le fichier Step10_orig.c a reçu ce flag.
+Pour un programme modulaire ayant plusieurs fonctions réparties sur plusieurs fichiers ne necessitant pas les mêmes options de compilation, il devient interessant 
+de savoir quel fichier a reçu quel option.
+
+*** Redondance de suggestions
+
+Une autre remarque se basant sur une observation sur le *dotprod* et *HACC* est qu'une même suggestion peut revenir pour plusieurs boucles et qu'au sein d'une même boucle
+on se retrouve avec une même suggestion relative à l'alignement (utilisation de posix_memealign). Il devient alors utile de pouvoir avoir une section/rubrique "Works around"
+ou "Mutual suggestions" qui mutualise les mêmes optimisations applicable à un ensemble de boucles. Cela rendrait la lecture plus simple et permetterait d'optimiser plus vite
+une application telle que *miniqmc* qui présente un très grand nombre de boucle optimisable.
+
+*** Amélioration de l'affichage en textuel
+
+La dernière remarque la plus importante que nous pouvons formuler est que *MAQAO* est extrémement gourmant en ressource. On constate souvent que l'interface grapique se fige le
+temps d'une analyse. Pour résoudre ce problème et permettre a nos analyse d'aller plus vite, une idée simple étant de désactiver l'interface graphique de nos machins. Cependant,
+en mode console, à moins de tout le temps rediriger la sortie standard vers un fichier pour pouvoir reconsulter nos résultats, l'affichage est très vite perdu et la lecture de fichiers
+html en console devient pénible. Une idée était donc de reformater la sortie textuelle de *MAQAO* pour obtenir un fichier en org-mode, plus facilement exploitable au mode console,
+emacs integrant la prise en charges de fichiers en orgmode. Un parseur a donc été écrit en C++ afin de pouvoir générer un rapport en orgmode à l'aide de la fonction *popen* ainsi qu'une relative
+bonne connaissance du format textuel de *MAQAO* et des informations affichées. 
+  
 
 *  Bibliographie
 
@@ -430,3 +479,4 @@ int main ( int argc, char ** argv)	{
 11) https://asc.llnl.gov/sites/asc/files/2020-09/haccmk.zip
 12) https://github.com/QMCPACK/miniqmc
 13) https://github.com/QMCPACK/miniqmc.git
+14) https://fr.wikipedia.org/wiki/Multiply-accumulate

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>MAQAO REPORT</title>
-<!-- 2021-01-17 dim. 23:21 -->
+<!-- 2021-01-18 lun. 00:08 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI" />
@@ -185,7 +185,13 @@ for the JavaScript code in this tag.
 <li><a href="#sec-5">5. Conclusion</a>
 <ul>
 <li><a href="#sec-5-1">5.1. Optimisation grace a MAQAO</a></li>
-<li><a href="#sec-5-2">5.2. Perspectives</a></li>
+<li><a href="#sec-5-2">5.2. Perspectives d'améliorations</a>
+<ul>
+<li><a href="#sec-5-2-1">5.2.1. Indiquer les options de compilations utilisés par binaire</a></li>
+<li><a href="#sec-5-2-2">5.2.2. Redondance de suggestions</a></li>
+<li><a href="#sec-5-2-3">5.2.3. Amélioration de l'affichage en textuel</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#sec-6">6. Bibliographie</a></li>
@@ -733,7 +739,7 @@ manuel et l'ajout des options <b>-funroll-loops</b> et/ou <b>-floop-unroll-and-j
 <li><a id="sec-2-3-2-2-2" name="sec-2-3-2-2-2"></a>Amélioration à apporter<br  /><div class="outline-text-6" id="text-2-3-2-2-2">
 
 <div id="fig:-01.dotprod_vecto" class="figure">
-<p><img src="./img/dotprod/01.dotprod/vectorization.png" alt="vectorization.png" width="500px" />
+<p><img src="./img/dotprod/02.dotprod/vectorization.png" alt="vectorization.png" width="500px" />
 </p>
 <p><span class="figure-number">Figure 17:</span> 01.dotprod : Taux de vectorisation</p>
 </div>
@@ -742,10 +748,37 @@ manuel et l'ajout des options <b>-funroll-loops</b> et/ou <b>-floop-unroll-and-j
 </li></ol>
 </div>
 
-
-
 <div id="outline-container-sec-2-3-3" class="outline-4">
 <h4 id="sec-2-3-3"><span class="section-number-4">2.3.3</span> Etape finale : 03.ditprod</h4>
+<div class="outline-text-4" id="text-2-3-3">
+
+<div id="fig:-final_global_metrics" class="figure">
+<p><img src="./img/dotprod/03.dotprod/last_global.png" alt="last_global.png" width="300px" />
+</p>
+<p><span class="figure-number">Figure 18:</span> Rubrique 'Global Metrics' finale</p>
+</div>
+
+
+<div id="fig:-final_index" class="figure">
+<p><img src="./img/dotprod/03.dotprod/last_loops_index.png" alt="last_loops_index.png" width="900px" />
+</p>
+<p><span class="figure-number">Figure 19:</span> 'Loops Index' finale</p>
+</div>
+
+
+<div id="fig:-last_cqa" class="figure">
+<p><img src="./img/dotprod/03.dotprod/last_gain.png" alt="last_gain.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 20:</span> Dernier rapport CQA</p>
+</div>
+
+
+<div id="fig:-proof_vecto" class="figure">
+<p><img src="./img/dotprod/03.dotprod/proof_vecto.png" alt="proof_vecto.png" width="500px" />
+</p>
+<p><span class="figure-number">Figure 21:</span> Preuve de la vectorisation</p>
+</div>
+</div>
 </div>
 </div>
 
@@ -840,14 +873,14 @@ int main ( int argc, char ** argv)      {
 <div id="fig:-useless0" class="figure">
 <p><img src="./img/dotprod/00.dotprod/useless0.png" alt="useless0.png" width="500px" />
 </p>
-<p><span class="figure-number">Figure 18:</span> Useless0</p>
+<p><span class="figure-number">Figure 22:</span> Useless0</p>
 </div>
 
 
 <div id="fig:-useless1" class="figure">
 <p><img src="./img/dotprod/00.dotprod/useless1.png" alt="useless1.png" width="500px" />
 </p>
-<p><span class="figure-number">Figure 19:</span> Useless1</p>
+<p><span class="figure-number">Figure 23:</span> Useless1</p>
 </div>
 </div>
 </li></ol>
@@ -869,6 +902,7 @@ int main ( int argc, char ** argv)      {
 </div>
 </div>
 
+
 <div id="outline-container-sec-4" class="outline-2">
 <h2 id="sec-4"><span class="section-number-2">4</span> Suggestions pour MAQAO</h2>
 </div>
@@ -881,9 +915,59 @@ int main ( int argc, char ** argv)      {
 </div>
 
 <div id="outline-container-sec-5-2" class="outline-3">
-<h3 id="sec-5-2"><span class="section-number-3">5.2</span> Perspectives</h3>
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> Perspectives d'améliorations</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Le principal objectif de ce projet étant de trouver des améliorations pour <b>MAQAO</b> et non améliorer les applications, ce document, qui se trouve
+être un rapport sur comment un groupe d'étudiant à du se familiariser avec, s'en servir pour optimiser des programmes ainsi que d'apprendre de 
+nouvelles techniques de programmation, constitue un feed-back et pourrait permettre des améliorations en analysant nos apprioris et postulats.
+</p>
+
+<p>
+A cela s'ajoute des suggestions qui nous sont venues lors du processus iteratif, énuméré ci-après:
+</p>
+</div>
+
+<div id="outline-container-sec-5-2-1" class="outline-4">
+<h4 id="sec-5-2-1"><span class="section-number-4">5.2.1</span> Indiquer les options de compilations utilisés par binaire</h4>
+<div class="outline-text-4" id="text-5-2-1">
+<p>
+Lors de l'analyse du programme <b>HACC</b>, on a du compiler séparement 3 fichiers. Pour avancer progressivement dans on amélioratoin, on s'est concentré sur un seul ficher
+dans un premier lieu. On s'est alors rendu compte que <b>MAQAO</b> indiquait "OK" pour les options de compilations alors que seul le fichier Step10<sub>orig</sub>.c a reçu ce flag.
+Pour un programme modulaire ayant plusieurs fonctions réparties sur plusieurs fichiers ne necessitant pas les mêmes options de compilation, il devient interessant 
+de savoir quel fichier a reçu quel option.
+</p>
 </div>
 </div>
+
+<div id="outline-container-sec-5-2-2" class="outline-4">
+<h4 id="sec-5-2-2"><span class="section-number-4">5.2.2</span> Redondance de suggestions</h4>
+<div class="outline-text-4" id="text-5-2-2">
+<p>
+Une autre remarque se basant sur une observation sur le <b>dotprod</b> et <b>HACC</b> est qu'une même suggestion peut revenir pour plusieurs boucles et qu'au sein d'une même boucle
+on se retrouve avec une même suggestion relative à l'alignement (utilisation de posix<sub>memealign</sub>). Il devient alors utile de pouvoir avoir une section/rubrique "Works around"
+ou "Mutual suggestions" qui mutualise les mêmes optimisations applicable à un ensemble de boucles. Cela rendrait la lecture plus simple et permetterait d'optimiser plus vite
+une application telle que <b>miniqmc</b> qui présente un très grand nombre de boucle optimisable.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5-2-3" class="outline-4">
+<h4 id="sec-5-2-3"><span class="section-number-4">5.2.3</span> Amélioration de l'affichage en textuel</h4>
+<div class="outline-text-4" id="text-5-2-3">
+<p>
+La dernière remarque la plus importante que nous pouvons formuler est que <b>MAQAO</b> est extrémement gourmant en ressource. On constate souvent que l'interface grapique se fige le
+temps d'une analyse. Pour résoudre ce problème et permettre a nos analyse d'aller plus vite, une idée simple étant de désactiver l'interface graphique de nos machins. Cependant,
+en mode console, à moins de tout le temps rediriger la sortie standard vers un fichier pour pouvoir reconsulter nos résultats, l'affichage est très vite perdu et la lecture de fichiers
+html en console devient pénible. Une idée était donc de reformater la sortie textuelle de <b>MAQAO</b> pour obtenir un fichier en org-mode, plus facilement exploitable au mode console,
+emacs integrant la prise en charges de fichiers en orgmode. Un parseur a donc été écrit en C++ afin de pouvoir générer un rapport en orgmode à l'aide de la fonction <b>popen</b> ainsi qu'une relative
+bonne connaissance du format textuel de <b>MAQAO</b> et des informations affichées. 
+</p>
+</div>
+</div>
+</div>
+</div>
+
 
 <div id="outline-container-sec-6" class="outline-2">
 <h2 id="sec-6"><span class="section-number-2">6</span> Bibliographie</h2>
@@ -915,13 +999,15 @@ int main ( int argc, char ** argv)      {
 </li>
 <li><a href="https://github.com/QMCPACK/miniqmc.git">https://github.com/QMCPACK/miniqmc.git</a>
 </li>
+<li><a href="https://fr.wikipedia.org/wiki/Multiply-accumulate">https://fr.wikipedia.org/wiki/Multiply-accumulate</a>
+</li>
 </ol>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI</p>
-<p class="date">Created: 2021-01-17 dim. 23:21</p>
+<p class="date">Created: 2021-01-18 lun. 00:08</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.2 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
