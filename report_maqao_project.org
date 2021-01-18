@@ -497,22 +497,38 @@ int main ( int argc, char ** argv)	{
 
 ** Obersations
 
-On constate au cours de l'analyse 
+On constate au cours de l'analyse que certaines informations pouvaient se montrer redondantes et d'autres inexploitable à notre échelle et sont exposées
+ci-après :
 
-     #+CAPTION: Useless0
+*** Informations inexploitées
+
+Dans cette section, nous présentons les captures des informations sur les types d'instruction et nombre d'instructions utilisés que nous n'avons pas pu exploiter
+dans notre processus iteratif.
+
+     #+CAPTION: Ensemble d'informations inexploité lors du premier run
      #+NAME: fig: useless0
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/useless0.png]]
 
-     #+CAPTION: Useless1
+     #+CAPTION: Ensemble d'informations inexploité lors du premier run
      #+NAME: fig: useless1
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/useless1.png]]
 
-     #+CAPTION: Useless0
+     #+CAPTION: Ensemble d'informations inexploité lors du deuxième run
      #+NAME: fig: useless0
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/01.dotprod/useless0.png]]
+
+*** Informations redondantes
+
+Dans cette section, on montre des informations qui ont été affichées plusieurs fois alors qu'elles avaient préalablement prise en compte (cas de posix\under{}memealign)
+ainsi que d'autres qui n'ont pas pu nous aider à optimiser notre programme (cas du unroll loops qui nous a empéché d'atteindre la vectorisation totale). 
+
+     #+CAPTION: 01.dotprod : Taux de vectorisation
+     #+NAME: fig: 01.dotprod_vecto
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/02.dotprod/vectorization.png]]
 
      #+CAPTION: Useless0
      #+NAME: fig: useless0
