@@ -87,7 +87,7 @@ all: 00.dotprod
 *** *dotprod.c*
 
 Une particularité du dotprod ci-après présenté est qu'il nous permet de fixer une taille de vecteur en Bytes
-et de boucler sur la fonciton principale afin de pouvoir jouer sur le temps d'exécution de notre programme d'une part
+et de boucler sur la fonction principale afin de pouvoir jouer sur le temps d'exécution de notre programme d'une part
 et ainsi mieux voir la performance gagné.
 
 #+BEGIN_SRC c
