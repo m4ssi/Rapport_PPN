@@ -7,13 +7,13 @@
 
 *MAQAO* est un outil composé de trois principaux modules (LProf, CQA, ONE View), qui permet d’analyser et optimiser les performances 
 de programmes HPC, il est indépendant du langage utilisé et il ne nécessite pas de recompilation grâce à sa capacité à fonctionner 
-au niveau binaire, il est compatibles sur plusieurs architectures (intel, AMD Xeon Phi).
+au niveau binaire, il est compatible sur plusieurs architectures (Intel, AMD Xeon Phi).
 Il a pour objectif de guider les programmeurs à réaliser des applications optimisées en leur fournissant des rapports et des conseils 
 détaillés tout au long du processus de développement.
 
 ** SIMD/Vectorisation
 
-La vectorisation est un processus de conversion qui exécute des instructions SSE & AVX et exploite des registres AVX et SSE, 
+La vectorisation est un processus de conversion qui exécute des instructions et exploite des registres AVX et SSE, 
 des extensions du jeu d’instructions SIMD des microprocesseurs x86, ces instructions sont utilisées de façon scalaire ou vectorielle 
 et permettent de lancer simultanément plusieurs même instruction sur plusieurs données afin de produire les résultats attendus avec 
 un coût d'exécution minimale.
@@ -46,9 +46,9 @@ un coût d'exécution minimale.
 *  ABC-MAQAO sur un cas simple : *dotprod*
 
 Afin de réaliser ce projet, une étape clé était de comprendre et d'apprendre à utiliser *MAQAO*. Pour cela, nous avons cherché à optimiser un
-benchmark deja vu en cours : le *dotprod*. L'idée était de faire le travail d'optimisation un maximum de fois depuis la version de base afin 
+benchmark déjà vu en cours : le *dotprod*. L'idée était de faire le travail d'optimisation un maximum de fois depuis la version de base afin 
 d'identifier les informations récurrentes et exploitable qui nous étaient produites. Une fois ces sections identifiées, une chaine de production
-d'un binaire (processus d'optimisation) a été mise en place et expliqué dans cette section.
+d'un binaire (processus d'optimisation) a été mise en place et expliquée dans cette section.
 
 Les résultats obtenus lors de cette analyse peuvent être retrouvés sur ce dépôt : [[Dépot contenant les RUNS et les sources du dotprod][https://github.com/m4ssi/Dotprod]]
 
@@ -58,13 +58,13 @@ La chaine de production mise en oeuvre, schématisée par la figure 1, se dérou
 
 1) Compilation sans options de compilation
 2) Analyse du binaire obtenu 
-3) Recompilation du programme avec les options suggérés et avec O2, O3 ou Ofast (généralement Ofast - passage en 7)
+3) Recompilation du programme avec les options suggérées et avec O2, O3 ou Ofast (généralement Ofast - passage en 7)
 4) Analyse des trois binaire obtenu
 5) Si les suggestions faites sont differentes pour les trois : retour en 3
 6) Sinon : choix du meilleur flags (compromis entre le temps d'exécution et taille du binaire) puis 7
 7) Application des recommandations et analyse jusqu'a trouver une limite
 
-   #+CAPTION: Processur iteratif d'optimisation à l'aide de MAQAO
+   #+CAPTION: Processus iteratif d'optimisation à l'aide de MAQAO
    #+NAME: fig: optimization_process
    #+ATTR_HTML: :width 600px
    [[./img/inter_process.png]]

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>MAQAO REPORT</title>
-<!-- 2021-01-18 lun. 02:28 -->
+<!-- 2021-01-18 lun. 03:10 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI" />
@@ -215,7 +215,7 @@ for the JavaScript code in this tag.
 <p>
 <b>MAQAO</b> est un outil composé de trois principaux modules (LProf, CQA, ONE View), qui permet d’analyser et optimiser les performances 
 de programmes HPC, il est indépendant du langage utilisé et il ne nécessite pas de recompilation grâce à sa capacité à fonctionner 
-au niveau binaire, il est compatibles sur plusieurs architectures (intel, AMD Xeon Phi).
+au niveau binaire, il est compatible sur plusieurs architectures (Intel, AMD Xeon Phi).
 Il a pour objectif de guider les programmeurs à réaliser des applications optimisées en leur fournissant des rapports et des conseils 
 détaillés tout au long du processus de développement.
 </p>
@@ -226,7 +226,7 @@ détaillés tout au long du processus de développement.
 <h3 id="sec-1-2"><span class="section-number-3">1.2</span> SIMD/Vectorisation</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
-La vectorisation est un processus de conversion qui exécute des instructions SSE &amp; AVX et exploite des registres AVX et SSE, 
+La vectorisation est un processus de conversion qui exécute des instructions et exploite des registres AVX et SSE, 
 des extensions du jeu d’instructions SIMD des microprocesseurs x86, ces instructions sont utilisées de façon scalaire ou vectorielle 
 et permettent de lancer simultanément plusieurs même instruction sur plusieurs données afin de produire les résultats attendus avec 
 un coût d'exécution minimale.
@@ -373,9 +373,9 @@ un coût d'exécution minimale.
 <div class="outline-text-2" id="text-2">
 <p>
 Afin de réaliser ce projet, une étape clé était de comprendre et d'apprendre à utiliser <b>MAQAO</b>. Pour cela, nous avons cherché à optimiser un
-benchmark deja vu en cours : le <b>dotprod</b>. L'idée était de faire le travail d'optimisation un maximum de fois depuis la version de base afin 
+benchmark déjà vu en cours : le <b>dotprod</b>. L'idée était de faire le travail d'optimisation un maximum de fois depuis la version de base afin 
 d'identifier les informations récurrentes et exploitable qui nous étaient produites. Une fois ces sections identifiées, une chaine de production
-d'un binaire (processus d'optimisation) a été mise en place et expliqué dans cette section.
+d'un binaire (processus d'optimisation) a été mise en place et expliquée dans cette section.
 </p>
 
 <p>
@@ -395,7 +395,7 @@ La chaine de production mise en oeuvre, schématisée par la figure 1, se dérou
 </li>
 <li>Analyse du binaire obtenu 
 </li>
-<li>Recompilation du programme avec les options suggérés et avec O2, O3 ou Ofast (généralement Ofast - passage en 7)
+<li>Recompilation du programme avec les options suggérées et avec O2, O3 ou Ofast (généralement Ofast - passage en 7)
 </li>
 <li>Analyse des trois binaire obtenu
 </li>
@@ -409,7 +409,7 @@ La chaine de production mise en oeuvre, schématisée par la figure 1, se dérou
 <div id="fig:-optimization_process" class="figure">
 <p><img src="./img/inter_process.png" alt="inter_process.png" width="600px" />
 </p>
-<p><span class="figure-number">Figure 1:</span> Processur iteratif d'optimisation à l'aide de MAQAO</p>
+<p><span class="figure-number">Figure 1:</span> Processus iteratif d'optimisation à l'aide de MAQAO</p>
 </div>
 </li>
 </ol>
@@ -1315,7 +1315,7 @@ bonne connaissance du format textuel de <b>MAQAO</b> et des informations affich�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI</p>
-<p class="date">Created: 2021-01-18 lun. 02:28</p>
+<p class="date">Created: 2021-01-18 lun. 03:10</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.2 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
