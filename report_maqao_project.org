@@ -538,6 +538,13 @@ ainsi que d'autres qui n'ont pas pu nous aider à optimiser notre programme (cas
 *  Mini-Applications
 
 ** HACC
+
+HACC, un des programmes qu'il nous était proposé d'optimisé, écrit en C est celui qui a le plus facilement été utilisé : après le run de base, nous avons
+eu les mêmes suggestions que pour le dotprod pour les différentes versions. Nous sommes alors passé très vite d'un programme s'exécutant en 136.99 secondes
+à un programme qui s'exécute en 10 seconde, avec un maximum de speed-up, une vectorisation très bonne dans l'ensemble et dont le code utilisateur correspond
+à la totalité du code exécuté. Notons cependant que ce coportement est normal car le benchmark HACC est sensé être optimisé 'à la dure' pour la fonction 
+*Step10_orig* alors que le reste du programme doit être le moins optimisé possible. Cela étant, les informations prises en cible pour avoir du gain en performance
+semblent être les plus pertinentes et montrent de bons résultats.  
    
 *** Résultat d'analyse : version de base
 
@@ -566,7 +573,7 @@ ainsi que d'autres qui n'ont pas pu nous aider à optimiser notre programme (cas
    #+CAPTION: Application HACC final
    #+NAME: fig: app_final_hacc
    #+ATTR_HTML: :width 900px
-   [[./img/HACC/application_init.png]]
+   [[./img/HACC/application_last.png]]
 
    #+CAPTION: 'Loops Index' HACC final
    #+NAME: fig: loops_final_hacc
