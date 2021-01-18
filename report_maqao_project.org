@@ -394,7 +394,7 @@ Cependant nous allons faire un dernier test et voir qu'une heuristique peu nous 
 A noter que la fonction suggéré par *MAQAO* dans cette capture a déjà été utilisé et constitue donc une redondance d'information a supprimer ou que l'utilisateur
 devrait pouvoir indiquer que cette fonction a été utilisé pour que *MAQAO* le prenne en compte et ne plus suggérer l'utilisation de cette fonction.
 
-*** Etape finale : 03.ditprod 
+*** Etape finale : 03.dotprod 
 
 **** Rapports obtenus
 
