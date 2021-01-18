@@ -530,7 +530,7 @@ ainsi que d'autres qui n'ont pas pu nous aider à optimiser notre programme (cas
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/02.dotprod/vectorization.png]]
 
-     #+CAPTION: Useless0
+     #+CAPTION: Unroll Loops
      #+NAME: fig: useless0
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/03.dotprod/useless_unroll.png]]
@@ -571,15 +571,77 @@ ainsi que d'autres qui n'ont pas pu nous aider à optimiser notre programme (cas
    #+CAPTION: 'Loops Index' HACC final
    #+NAME: fig: loops_final_hacc
    #+ATTR_HTML: :width 900px
-   [[./img/HACC/loop_index_final.png]]
+   [[./img/HACC/loop_index_last.png]]
+
 ** miniqmc
-** NPB3.2.1-MZ
+
+Ce benchmark est une partie simplifiée de QMCPACK1, il contient 
+une implémentation précise simplifiée de côté calcul d’algorithmes quantiques 
+de Monte Carlo dans l'espace réel.
+
+Exemple d’utilisation : vérification de la performance des GPU d’Intel.
+
+*** Etape 1 :
+
+Nous avons effectué une modification dans le CMakeLists.txt de miniQMC en ajoutant l’option de debugage suivante :
+-“ SET(CMAKE\under{}BUILD\under{}TYPE debug) ”, la figure ci-dessous nous montre les résultats obtenus.
+
+   #+CAPTION: 'Global Metrics' miniqmc initial
+   #+NAME: fig: global_qmc_init
+   #+ATTR_HTML: :width 300px
+   [[./img/miniqmc/global_init.png]]
+
+*** Etape 2 :
+
+Nous avons ajouté add\under{}compile\under{}options(-O2) dans le CMakeLists.txt, on a obtenu les résultats suivants :
+
+   #+CAPTION: 'Global Metrics' miniqmc
+   #+NAME: fig: global_qmc_init
+   #+ATTR_HTML: :width 300px
+   [[./img/miniqmc/global_final.png]]
+
+*** Etape 3 :
+
+Maintenant que nous avons validé les options de compilation ainsi que les speed-ups potentiels, 
+nous allons passer au volet loop ou on remarque qu’il y a une  boucle qui a une couverture de  31.78 % 
+
+   #+CAPTION: 'Loops Index' miniqmc
+   #+NAME: fig: index_qmc_init
+   #+ATTR_HTML: :width 900px
+   [[./img/miniqmc/loops_index_0.png]]
+
+En regardant de plus  près les messages laissées au niveau du rapport CQA, ce dernier nous dit que cette boucle n’est pas vectorisée :
+
+
+   #+CAPTION: Vectorisation de miniqmc
+   #+NAME: fig: global_qmc_init
+   #+ATTR_HTML: :width 600px
+   [[./img/miniqmc/vecto2.png]]
+
+De ce fait on a utilisé plus d’option de compilation afin de pouvoir vectoriser le plus possible cette dernière, après plusieurs tentative on a conclu qu’avec la suite de flag suivante était celle qui vectorise le plus :
+2OMAX = -march=native -mtune=native -Ofast -funroll-loops 
+
+   #+CAPTION: 'Loops Indexs' miniqmc
+   #+NAME: fig: index_qmc
+   #+ATTR_HTML: :width 900px
+   [[./img/miniqmc/loops_index_0.png]]
+
+On remarque qu’on a réussi à vectorisé la boucle, on est passer d’une couverture de 31.78% à une couverture de 0.48 %  
+
+   #+CAPTION: Vectorisation de miniqmc
+   #+NAME: fig: global_qmc_init
+   #+ATTR_HTML: :width 600px
+   [[./img/miniqmc/vecto.png]]
+
+Afin de bien visualiser et comparer  les runs qu'on a fait avec différents flag d’optimisation, on a résumé les valeurs obtenu dans le tableau ci-dessous : 
+
+   #+CAPTION: Tableau recapitulatif des exécution de miniqmc
+   #+NAME: fig: tab_qmc
+   #+ATTR_HTML: :width 700px
+   [[./img/miniqmc/tab.png]]
+
 
 *  Conclusion
-
-** Optimisation grace a MAQAO
-
-** Perspectives d'améliorations
 
 Le principal objectif de ce projet étant de trouver des améliorations pour *MAQAO* et non améliorer les applications, ce document, qui se trouve
 être un rapport sur comment un groupe d'étudiant à du se familiariser avec, s'en servir pour optimiser des programmes ainsi que d'apprendre de 
@@ -587,6 +649,7 @@ nouvelles techniques de programmation, constitue un feed-back et pourrait permet
 
 A cela s'ajoute des suggestions qui nous sont venues lors du processus iteratif, énuméré ci-après:
 
+** Perspective d'améliorations
 *** Indiquer les options de compilations utilisés par binaire
 
 Lors de l'analyse du programme *HACC*, on a du compiler séparement 3 fichiers. Pour avancer progressivement dans on amélioratoin, on s'est concentré sur un seul ficher

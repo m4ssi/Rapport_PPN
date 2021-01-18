@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>MAQAO REPORT</title>
-<!-- 2021-01-18 lun. 01:55 -->
+<!-- 2021-01-18 lun. 02:28 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI" />
@@ -181,18 +181,22 @@ for the JavaScript code in this tag.
 <li><a href="#sec-3-1-2">3.1.2. Résultat d'analyse : version finale</a></li>
 </ul>
 </li>
-<li><a href="#sec-3-2">3.2. miniqmc</a></li>
-<li><a href="#sec-3-3">3.3. NPB3.2.1-MZ</a></li>
+<li><a href="#sec-3-2">3.2. miniqmc</a>
+<ul>
+<li><a href="#sec-3-2-1">3.2.1. Etape 1 :</a></li>
+<li><a href="#sec-3-2-2">3.2.2. Etape 2 :</a></li>
+<li><a href="#sec-3-2-3">3.2.3. Etape 3 :</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#sec-4">4. Conclusion</a>
 <ul>
-<li><a href="#sec-4-1">4.1. Optimisation grace a MAQAO</a></li>
-<li><a href="#sec-4-2">4.2. Perspectives d'améliorations</a>
+<li><a href="#sec-4-1">4.1. Perspective d'améliorations</a>
 <ul>
-<li><a href="#sec-4-2-1">4.2.1. Indiquer les options de compilations utilisés par binaire</a></li>
-<li><a href="#sec-4-2-2">4.2.2. Redondance de suggestions</a></li>
-<li><a href="#sec-4-2-3">4.2.3. Amélioration de l'affichage en textuel</a></li>
+<li><a href="#sec-4-1-1">4.1.1. Indiquer les options de compilations utilisés par binaire</a></li>
+<li><a href="#sec-4-1-2">4.1.2. Redondance de suggestions</a></li>
+<li><a href="#sec-4-1-3">4.1.3. Amélioration de l'affichage en textuel</a></li>
 </ul>
 </li>
 </ul>
@@ -1037,7 +1041,7 @@ ainsi que d'autres qui n'ont pas pu nous aider à optimiser notre programme (cas
 <div id="fig:-useless0" class="figure">
 <p><img src="./img/dotprod/03.dotprod/useless_unroll.png" alt="useless_unroll.png" width="500px" />
 </p>
-<p><span class="figure-number">Figure 26:</span> Useless0</p>
+<p><span class="figure-number">Figure 26:</span> Unroll Loops</p>
 </div>
 </div>
 </div>
@@ -1095,31 +1099,130 @@ ainsi que d'autres qui n'ont pas pu nous aider à optimiser notre programme (cas
 
 
 <div id="fig:-loops_final_hacc" class="figure">
-<p><img src="./img/HACC/loop_index_final.png" alt="loop_index_final.png" width="900px" />
+<p><img src="./img/HACC/loop_index_last.png" alt="loop_index_last.png" width="900px" />
 </p>
 <p><span class="figure-number">Figure 32:</span> 'Loops Index' HACC final</p>
 </div>
 </div>
 </div>
 </div>
+
 <div id="outline-container-sec-3-2" class="outline-3">
 <h3 id="sec-3-2"><span class="section-number-3">3.2</span> miniqmc</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Ce benchmark est une partie simplifiée de QMCPACK1, il contient 
+une implémentation précise simplifiée de côté calcul d’algorithmes quantiques 
+de Monte Carlo dans l'espace réel.
+</p>
+
+<p>
+Exemple d’utilisation : vérification de la performance des GPU d’Intel.
+</p>
 </div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3"><span class="section-number-3">3.3</span> NPB3.2.1-MZ</h3>
+
+<div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1"><span class="section-number-4">3.2.1</span> Etape 1 :</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+Nous avons effectué une modification dans le CMakeLists.txt de miniQMC en ajoutant l’option de debugage suivante :
+-“ SET(CMAKE_BUILD_TYPE debug) ”, la figure ci-dessous nous montre les résultats obtenus.
+</p>
+
+
+<div id="fig:-global_qmc_init" class="figure">
+<p><img src="./img/miniqmc/global_init.png" alt="global_init.png" width="300px" />
+</p>
+<p><span class="figure-number">Figure 33:</span> 'Global Metrics' miniqmc initial</p>
 </div>
 </div>
+</div>
+
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2"><span class="section-number-4">3.2.2</span> Etape 2 :</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+Nous avons ajouté add_compile_options(-O2) dans le CMakeLists.txt, on a obtenu les résultats suivants :
+</p>
+
+
+<div id="fig:-global_qmc_init" class="figure">
+<p><img src="./img/miniqmc/global_final.png" alt="global_final.png" width="300px" />
+</p>
+<p><span class="figure-number">Figure 34:</span> 'Global Metrics' miniqmc</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2-3" class="outline-4">
+<h4 id="sec-3-2-3"><span class="section-number-4">3.2.3</span> Etape 3 :</h4>
+<div class="outline-text-4" id="text-3-2-3">
+<p>
+Maintenant que nous avons validé les options de compilation ainsi que les speed-ups potentiels, 
+nous allons passer au volet loop ou on remarque qu’il y a une  boucle qui a une couverture de  31.78 % 
+</p>
+
+
+<div id="fig:-index_qmc_init" class="figure">
+<p><img src="./img/miniqmc/loops_index_0.png" alt="loops_index_0.png" width="900px" />
+</p>
+<p><span class="figure-number">Figure 35:</span> 'Loops Index' miniqmc</p>
+</div>
+
+<p>
+En regardant de plus  près les messages laissées au niveau du rapport CQA, ce dernier nous dit que cette boucle n’est pas vectorisée :
+</p>
+
+
+
+<div id="fig:-global_qmc_init" class="figure">
+<p><img src="./img/miniqmc/vecto2.png" alt="vecto2.png" width="600px" />
+</p>
+<p><span class="figure-number">Figure 36:</span> Vectorisation de miniqmc</p>
+</div>
+
+<p>
+De ce fait on a utilisé plus d’option de compilation afin de pouvoir vectoriser le plus possible cette dernière, après plusieurs tentative on a conclu qu’avec la suite de flag suivante était celle qui vectorise le plus :
+2OMAX = -march=native -mtune=native -Ofast -funroll-loops 
+</p>
+
+
+<div id="fig:-index_qmc" class="figure">
+<p><img src="./img/miniqmc/loops_index_0.png" alt="loops_index_0.png" width="900px" />
+</p>
+<p><span class="figure-number">Figure 37:</span> 'Loops Indexs' miniqmc</p>
+</div>
+
+<p>
+On remarque qu’on a réussi à vectorisé la boucle, on est passer d’une couverture de 31.78% à une couverture de 0.48 %  
+</p>
+
+
+<div id="fig:-global_qmc_init" class="figure">
+<p><img src="./img/miniqmc/vecto.png" alt="vecto.png" width="600px" />
+</p>
+<p><span class="figure-number">Figure 38:</span> Vectorisation de miniqmc</p>
+</div>
+
+<p>
+Afin de bien visualiser et comparer  les runs qu'on a fait avec différents flag d’optimisation, on a résumé les valeurs obtenu dans le tableau ci-dessous : 
+</p>
+
+
+<div id="fig:-tab_qmc" class="figure">
+<p><img src="./img/miniqmc/tab.png" alt="tab.png" width="700px" />
+</p>
+<p><span class="figure-number">Figure 39:</span> Tableau recapitulatif des exécution de miniqmc</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
 
 <div id="outline-container-sec-4" class="outline-2">
 <h2 id="sec-4"><span class="section-number-2">4</span> Conclusion</h2>
 <div class="outline-text-2" id="text-4">
-</div><div id="outline-container-sec-4-1" class="outline-3">
-<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Optimisation grace a MAQAO</h3>
-</div>
-
-<div id="outline-container-sec-4-2" class="outline-3">
-<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Perspectives d'améliorations</h3>
-<div class="outline-text-3" id="text-4-2">
 <p>
 Le principal objectif de ce projet étant de trouver des améliorations pour <b>MAQAO</b> et non améliorer les applications, ce document, qui se trouve
 être un rapport sur comment un groupe d'étudiant à du se familiariser avec, s'en servir pour optimiser des programmes ainsi que d'apprendre de 
@@ -1131,9 +1234,12 @@ A cela s'ajoute des suggestions qui nous sont venues lors du processus iteratif,
 </p>
 </div>
 
-<div id="outline-container-sec-4-2-1" class="outline-4">
-<h4 id="sec-4-2-1"><span class="section-number-4">4.2.1</span> Indiquer les options de compilations utilisés par binaire</h4>
-<div class="outline-text-4" id="text-4-2-1">
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Perspective d'améliorations</h3>
+<div class="outline-text-3" id="text-4-1">
+</div><div id="outline-container-sec-4-1-1" class="outline-4">
+<h4 id="sec-4-1-1"><span class="section-number-4">4.1.1</span> Indiquer les options de compilations utilisés par binaire</h4>
+<div class="outline-text-4" id="text-4-1-1">
 <p>
 Lors de l'analyse du programme <b>HACC</b>, on a du compiler séparement 3 fichiers. Pour avancer progressivement dans on amélioratoin, on s'est concentré sur un seul ficher
 dans un premier lieu. On s'est alors rendu compte que <b>MAQAO</b> indiquait "OK" pour les options de compilations alors que seul le fichier Step10<sub>orig</sub>.c a reçu ce flag.
@@ -1143,9 +1249,9 @@ de savoir quel fichier a reçu quel option.
 </div>
 </div>
 
-<div id="outline-container-sec-4-2-2" class="outline-4">
-<h4 id="sec-4-2-2"><span class="section-number-4">4.2.2</span> Redondance de suggestions</h4>
-<div class="outline-text-4" id="text-4-2-2">
+<div id="outline-container-sec-4-1-2" class="outline-4">
+<h4 id="sec-4-1-2"><span class="section-number-4">4.1.2</span> Redondance de suggestions</h4>
+<div class="outline-text-4" id="text-4-1-2">
 <p>
 Une autre remarque se basant sur une observation sur le <b>dotprod</b> et <b>HACC</b> est qu'une même suggestion peut revenir pour plusieurs boucles et qu'au sein d'une même boucle
 on se retrouve avec une même suggestion relative à l'alignement (utilisation de posix<sub>memealign</sub>). Il devient alors utile de pouvoir avoir une section/rubrique "Works around"
@@ -1155,9 +1261,9 @@ une application telle que <b>miniqmc</b> qui présente un très grand nombre de 
 </div>
 </div>
 
-<div id="outline-container-sec-4-2-3" class="outline-4">
-<h4 id="sec-4-2-3"><span class="section-number-4">4.2.3</span> Amélioration de l'affichage en textuel</h4>
-<div class="outline-text-4" id="text-4-2-3">
+<div id="outline-container-sec-4-1-3" class="outline-4">
+<h4 id="sec-4-1-3"><span class="section-number-4">4.1.3</span> Amélioration de l'affichage en textuel</h4>
+<div class="outline-text-4" id="text-4-1-3">
 <p>
 La dernière remarque la plus importante que nous pouvons formuler est que <b>MAQAO</b> est extrémement gourmant en ressource. On constate souvent que l'interface grapique se fige le
 temps d'une analyse. Pour résoudre ce problème et permettre a nos analyse d'aller plus vite, une idée simple étant de désactiver l'interface graphique de nos machins. Cependant,
@@ -1209,7 +1315,7 @@ bonne connaissance du format textuel de <b>MAQAO</b> et des informations affich�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Akli HAMITOUCHE - Amar HENNI - Amayas OUAKED - Imane KHELOUAT - Salem Aghiles BRAI</p>
-<p class="date">Created: 2021-01-18 lun. 01:55</p>
+<p class="date">Created: 2021-01-18 lun. 02:28</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.2.2 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
