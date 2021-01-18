@@ -580,6 +580,115 @@ semblent être les plus pertinentes et montrent de bons résultats.
    #+ATTR_HTML: :width 900px
    [[./img/HACC/loop_index_last.png]]
 
+*** Code source : 
+
+*** Sections modifiées
+
+#+BEGIN_SRC c
+
+void Step10_orig( int count1, float xxi, float yyi, float zzi, float fsrrmax2, float mp_rsm2, float *restrict xx1, float *restrict yy1, float *restrict zz1, float *restrict mass1, float *dxi, float *dyi, float *dzi )
+{
+
+    const float ma0 = 0.269327, ma1 = -0.0750978, ma2 = 0.0114808, ma3 = -0.00109313, ma4 = 0.0000605491, ma5 = -0.00000147177;
+    
+    float dxc, dyc, dzc, m, r2, f, xi, yi, zi;
+    int j;
+
+    xi = 0.; yi = 0.; zi = 0.;
+
+    for ( j = 0; j < count1; j++ ) 
+    {
+        dxc = *(xx1+j) - xxi;
+        dyc = *(yy1+j) - yyi;
+        dzc = *(zz1+j) - zzi;
+  
+        r2 = (dxc * dxc) + (dyc * dyc) + (dzc * dzc);
+       
+        m = ( r2 < fsrrmax2 ) ? *(mass1+j) : 0.0f;
+
+        f =  pow( r2 + mp_rsm2, -1.5 ) - ( ma0 + r2*(ma1 + r2*(ma2 + r2*(ma3 + r2*(ma4 + r2*ma5)))));
+        
+        f = ( r2 > 0.0f ) ? m * f : 0.0f;
+
+        xi = xi + (f * dxc);
+        yi = yi + (f * dyc);
+        zi = zi + (f * dzc);
+    }
+
+    *dxi = xi;
+    *dyi = yi;
+    *dzi = zi;
+}
+
+int main ()	{
+  ...
+  // Allocation
+  float *restrict p_xx = NULL, *restrict p_yy = NULL, *restrict p_zz = NULL, *restrict p_mass = NULL, *restrict p_vx1 = NULL, *restrict p_vy1 = NULL, *restrict p_vz1 = NULL;
+  int ret = 0;
+  ret += posix_memalign ((void **) &p_xx, 32, N * sizeof ( float));
+  ret += posix_memalign ((void **) &p_yy, 32, N * sizeof ( float));
+  ret += posix_memalign ((void **) &p_zz, 32, N * sizeof ( float));
+  ret += posix_memalign ((void **) &p_mass, 32, N * sizeof ( float));
+  ret += posix_memalign ((void **) &p_vx1, 32, N * sizeof ( float));
+  ret += posix_memalign ((void **) &p_vy1, 32, N * sizeof ( float));
+  ret += posix_memalign ((void **) &p_vz1, 32, N * sizeof ( float));
+  if ( ret) return 1;
+
+  float	*restrict  xx = __builtin_assume_aligned( p_xx, 32);
+  float	*restrict  yy = __builtin_assume_aligned( p_yy, 32);
+  float	*restrict  zz = __builtin_assume_aligned( p_zz, 32);
+  float	*restrict  mass = __builtin_assume_aligned( p_mass, 32);
+  float	*restrict  vx1 = __builtin_assume_aligned( p_vx1, 32);
+  float	*restrict  vy1 = __builtin_assume_aligned( p_vy1, 32);
+  float	*restrict  vz1 = __builtin_assume_aligned( p_vz1, 32);
+
+  ...
+  // Ligne 123
+#pragma unroll(4)      
+      for ( i = 1; i < n; i++ )
+      {
+          *(xx+i) = *(xx+i-1) + dx1;
+          *(yy+i) = *(yy+i-1) + dy1;
+          *(zz+i) = *(zz+i-1) + dz1;
+          *(mass+i) = (float)i * 0.01f + *(xx+i);
+      }
+    
+      for ( i = 0; i < n; i++ )
+      {
+          *(vx1+i) = 0.f;
+          *(vy1+i) = 0.f;
+          *(vz1+i) = 0.f;
+      }  
+  ...
+  // Ligne 168
+      validation = 0.;
+      for ( i = 0; i < n; i++ )
+      {
+         validation = validation + ( *(vx1+i) + *(vy1+i) + *(vz1+i) );
+      }
+
+      final = final + validation;
+  ...
+	return 0;
+}
+
+
+#+END_SRC
+
+*** Options de compilation
+
+#+BEGIN_SRC make
+ifeq "$(PLAT)" "gnu"
+CC = gcc
+LD = $(CC) 
+LIBS = -lm 
+CFLAGS_KERNEL = -g -Wall -Ofast -march=x86-64 -march=core-avx2 -ftree-vectorize -funroll-loops -floop-unroll-and-jam
+CFLAGS_MAIN   = -g -fopenmp -Wall -Ofast -march=x86-64 -march=core-avx2 -ftree-vectorize -funroll-loops -floop-unroll-and-jam
+LDFLAGS       = -fopenmp
+endif
+
+#+END_SRC
+
 ** miniqmc
 
 Ce benchmark est une partie simplifiée de QMCPACK1, il contient 
