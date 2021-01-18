@@ -5,38 +5,43 @@
 
 ** Présentation de l'outil MAQAO
 
-C’est un outil composé de trois principaux modules (LProf, CQA, ONE View), qui permet d’analyser et optimiser les performances de programmes HPC, il est indépendant du langage utilisé et il ne nécessite pas de recompilation grâce à sa capacité à fonctionner au niveau binaire, il est compatibles sur plusieurs architectures (intel  AMD Xeon Phi) .
-Il a pour objectif de guider les programmeurs à réaliser des applications optimisées en leur fournissant des rapports et des conseils détaillés tout au long du processus de développement.
-
+*MAQAO* est un outil composé de trois principaux modules (LProf, CQA, ONE View), qui permet d’analyser et optimiser les performances 
+de programmes HPC, il est indépendant du langage utilisé et il ne nécessite pas de recompilation grâce à sa capacité à fonctionner 
+au niveau binaire, il est compatibles sur plusieurs architectures (intel, AMD Xeon Phi).
+Il a pour objectif de guider les programmeurs à réaliser des applications optimisées en leur fournissant des rapports et des conseils 
+détaillés tout au long du processus de développement.
 
 ** SIMD/Vectorisation
 
-La vectorisation  est un processus de conversion  qui exécute des instructions SSE & AVX qui sont des extensions de l’architecture du jeu d’instructions SIMD des microprocesseurs x86, ces instructions sont utilisées de façon scalaire ou vectorielle et permettent de lancer simultanément une mêmes instructions sur plusieurs données afin de produire les résultats attendus avec un coût d'exécution minimale.
+La vectorisation est un processus de conversion qui exécute des instructions SSE & AVX et exploite des registres AVX et SSE, 
+des extensions du jeu d’instructions SIMD des microprocesseurs x86, ces instructions sont utilisées de façon scalaire ou vectorielle 
+et permettent de lancer simultanément plusieurs même instruction sur plusieurs données afin de produire les résultats attendus avec 
+un coût d'exécution minimale.
 
 ** Flags d'optimisation des compilateurs
 
-|-------------------------+-----------+-------------------------------------------------------------------------------------------------|
-| Flags                   | Valeurs   | Description                                                                                     |
-|-------------------------+-----------+-------------------------------------------------------------------------------------------------|
-| -g                      |           | produit les informations de debug dans le format de l'OS                                        |
-|                         |           | permet d'avoir le lien entre le binaire et le source                                            |
-| -fnp-omit-frame-pointer |           | permet d'avoir les callchains avec les options par défaut du profiler                           |
-| -O2                     |           | produit un binaire légèrement optimisé                                                          |
-| -O3                     |           | produit un binaire optimisé                                                                     |
-| -Ofast                  |           | produit un binaire fortement optimisé                                                           |
-| -funroll-loops          |           | force le déroulage des boucles                                                                  |
-| -fassociative-math      |           | autorise la réassociatopn d'opérandes dans une série d'opération à virgule flottante            |
-| -ftree-vectorize        |           | effectue la vectorisation de boucle sur les arbres ? : activé par défaut avec -O3               |
-| -floop-unroll-and-jam   |           | non trouvée dans le manuel de GCC                                                               |
-| -march=                 | native    | indique au compilateur de produire un binaire qui correspond au processeur d'exécution du code  |
-|                         | core-avx2 |                                                                                                 |
-|                         | x86-64    |                                                                                                 |
-| -mtune=                 | native    | génère un code optimisé pour l'architecture cible tout en garantissant une retro-coçmpatibilité |
-| -finline-functions      |           | inline toutes les fonctions simples                                                             |
-| -flto                   |           | exécute l'optimiseur de temps de liaison                                                        |
-|                         |           |                                                                                                 |
-|-------------------------+-----------+-------------------------------------------------------------------------------------------------|
-
+|-------------------------+-----------+--------------------------------------------------------------------------------------|
+| Flags                   | Valeurs   | Description                                                                          |
+|-------------------------+-----------+--------------------------------------------------------------------------------------|
+| -g                      |           | produit les informations de debug dans le format de l'OS                             |
+|                         |           | permet d'avoir le lien entre le binaire et le source                                 |
+| -fnp-omit-frame-pointer |           | permet d'avoir les callchains avec les options par défaut du profiler                |
+| -O2                     |           | produit un binaire légèrement optimisé                                               |
+| -O3                     |           | produit un binaire optimisé                                                          |
+| -Ofast                  |           | produit un binaire fortement optimisé                                                |
+| -funroll-loops          |           | force le déroulage des boucles                                                       |
+| -fassociative-math      |           | autorise la réassociatopn d'opérandes dans une série d'opération à virgule flottante |
+| -ftree-vectorize        |           | effectue la vectorisation de boucle sur les arbres ? : activé par défaut avec -O3    |
+| -floop-unroll-and-jam   |           | non trouvée dans le manuel de GCC                                                    |
+| -march=                 | native    | indique au compilateur de produire un binaire qui correspond                         |
+|                         | core-avx2 | au processeur d'exécution du code                                                    |
+|                         | x86-64    |                                                                                      |
+| -mtune=                 | native    | génère un code optimisé pour l'architecture cible tout en garantissant               |
+|                         |           | une retro-coçmpatibilité                                                             |
+| -finline-functions      |           | inline toutes les fonctions simples                                                  |
+| -flto                   |           | exécute l'optimiseur de temps de liaison                                             |
+|                         |           |                                                                                      |
+|-------------------------+-----------+--------------------------------------------------------------------------------------|
 
 *  ABC-MAQAO sur un cas simple : *dotprod*
 
@@ -259,10 +264,37 @@ manuel et l'ajout des options *-funroll-loops* et/ou *-floop-unroll-and-jam*.
      [[./img/dotprod/00.dotprod/unroll_opportunity.png]]
 
 
-
 *** Etapes intermediaires  : 01.dotprod & 02.dotprod
 
 **** 01.dotprod
+
+Dans cette version, on remarque une nette amélioration de notre programme : nous passons d'un temps d'exécution de 4.14 secondes à 1.3 secondes
+avec une meilleurs efficactiés de nos accès mémoire (100%). Cette amélioration est confirmé par le speed-up potentiel de 1.33 si on arrive a totalement
+vectoriser notre programme. On remarque également que l'une des boucles de notre programme n'est pas disponnible sur notre rapport. On en déduit qu'elle
+a été optimisé au maximum et que le travail restant ne s'effectuera que sur une seul boucle. A noter que des améliorations peuvent être possible .
+A cette étape, notre programme reçoit les modifications présentées ci-après :
+
+#+BEGIN_SRC c
+double dotprod(double *restrict a, double *restrict b, unsigned long long n)	{
+	double d = 0.0;
+	for ( unsigned long long i = 0; i < n; i+=4)	{
+		d += ( *(a+i) * *(b+i) );
+		d += ( *(a+i+1) * *(b+i+1) );
+		d += ( *(a+i+2) * *(b+i+2) );
+		d += ( *(a+i+3) * *(b+i+3) );
+	}
+	return d;	
+}
+
+void fill_vector (double *restrict vect, unsigned long long n)	{
+	for (unsigned long long i = 0; i < n; i+=4)	{
+		*(vect+i) = 1;
+		*(vect+i+1) = 1;
+		*(vect+i+2) = 1;
+		*(vect+i+3) = 1;
+	}
+}
+#+END_SRC
 
 ***** Rapport sur la version 01 et améliorations constatés
 
@@ -278,6 +310,10 @@ manuel et l'ajout des options *-funroll-loops* et/ou *-floop-unroll-and-jam*.
 
 ***** Amélioration à apporter
 
+D'après les sections du rapport suivante, on se rend compte que notre programme est vectorisé mais pas totalement. Ce problème vient du fait que notre
+mémoire n'est pas alignée et nous applicons donc la suggestion d'utiliser la fonction *posix_memalign*. Nous décidons également d'enrouler la boucle du dotprod 
+afin de voir l'effet que ça aura sur la vectorisation.
+
      #+CAPTION: 01.dotprod : Taux de vectorisation
      #+NAME: fig: 01.dotprod_vecto
      #+ATTR_HTML: :width 500px
@@ -291,26 +327,80 @@ manuel et l'ajout des options *-funroll-loops* et/ou *-floop-unroll-and-jam*.
 
 **** 02.dotprod
 
+Arrivé a cette étape, les principaux changement de notre code source sont les suivants : utilisation de *posix\under{}memalign* et enroulement d'une boucle
+comme le montre le listing suivant :
+
+#+BEGIN_SRC c
+
+double dotprod(double *restrict a, double *restrict b, unsigned long long n)	{
+	double d = 0.0;
+	for ( unsigned long long i = 0; i < n; i+=2)	{
+		d += ( *(a+i) * *(b+i) );
+		d += ( *(a+i+1) * *(b+i+1) );
+		//~ d += ( *(a+i+2) * *(b+i+2) );
+		//~ d += ( *(a+i+3) * *(b+i+3) );
+	}
+	return d;	
+}
+
+int main ( int argc, char ** argv)	{
+	// Size of vectors
+	...
+	// Allocate memory for vectors
+	double	* p_a = NULL,
+			* p_b = NULL;
+	int ret = 0;
+	ret +=posix_memalign ((void **)  &p_a, 32, n);
+	ret += posix_memalign ((void **) &p_b, 32, n);
+	if ( ret) return 2;		
+	double	* a = __builtin_assume_aligned(p_a, 32),
+			* b = __builtin_assume_aligned(p_b, 32),
+			res = 0.0;	
+	// Init vector values		
+	...
+	// Doing a dotprod
+	...
+	// Free memory
+	...
+	return 0;
+}
+
+#+END_SRC
+
 ***** Rapport sur la version 02 et améliorations constatés
 
-     #+CAPTION: Rubrique 'Global Metrics' 02.dotprod
+A notre grande surprise, la version déroulée deux fois est plus optimale que la version déroulée quatre fois. Nous allons donc réessayer une nouvelle
+fois sans déroulage de boucle et ainsi voir l'effet que ça pourrait avoir vu qu'on a deja eu un effet positif en réduisant le déroulage.
+
+     #+CAPTION: Rubrique 'Global Metrics' 02.dotprod déroulé 4 fois
      #+NAME: fig: 02.dotprod_global_metrics
      #+ATTR_HTML: :width 300px
-     [[./img/dotprod/02.dotprod/global.png]]
+     [[./img/dotprod/02.dotprod/global_4.png]]
 
-     #+CAPTION: FMA prouvant une vectorisation 02.dotprod
+     #+CAPTION: Rubrique 'Global Metrics' 02.dotprod déroulé 2 fois
      #+NAME: fig: 02.dotprod_fma
-     #+ATTR_HTML: :width 900px
-     [[./img/dotprod/02.dotprod/fma_shows_vecto.png]]
+     #+ATTR_HTML: :width 300px
+     [[./img/dotprod/02.dotprod/global_2.png]]
 
 ***** Amélioration à apporter
 
+On constate encore une fois que notre boucle n'est toujours pas vectorisé totalement. On peut donc conclure que nous avons atteint notre limite d'optimisation.
+Cependant nous allons faire un dernier test et voir qu'une heuristique peu nous conduire à une meilleur version.
      #+CAPTION: 01.dotprod : Taux de vectorisation
      #+NAME: fig: 01.dotprod_vecto
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/02.dotprod/vectorization.png]]
 
+A noter que la fonction suggéré par *MAQAO* dans cette capture a déjà été utilisé et constitue donc une redondance d'information a supprimer ou que l'utilisateur
+devrait pouvoir indiquer que cette fonction a été utilisé pour que *MAQAO* le prenne en compte et ne plus suggérer l'utilisation de cette fonction.
+
 *** Etape finale : 03.ditprod 
+
+**** Rapports obtenus
+
+Arrivé au dernier rapport, on voit clairement que notre programme est totalement vectorisé et est au plus efficace possible : gain de temps d'exécution constaté
+par rapport a toutes les versions précédentes et utilisation de tous les registres SSE/AVX. Nous avons donc ainsi atteint le meilleur code possible avec les meilleurs
+options d'optimisation possible pour le dotprod.
 
      #+CAPTION: Rubrique 'Global Metrics' finale
      #+NAME: fig: final_global_metrics
@@ -332,9 +422,8 @@ manuel et l'ajout des options *-funroll-loops* et/ou *-floop-unroll-and-jam*.
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/03.dotprod/proof_vecto.png]]
      
-** Version finale optimisée
 
-*** Makefile
+**** Makefile
 
 #+BEGIN_SRC make
 all: 03.dotprod
@@ -344,7 +433,7 @@ all: 03.dotprod
 	
 #+END_SRC
 
-*** *dotprod.c*
+**** *dotprod.c*
 
 #+BEGIN_SRC c
 double dotprod(double *restrict a, double *restrict b, unsigned long long n)	{
@@ -405,9 +494,10 @@ int main ( int argc, char ** argv)	{
 }
 #+END_SRC
 
-*** Obersations
 
-**** Informations non-exploitées
+** Obersations
+
+On constate au cours de l'analyse 
 
      #+CAPTION: Useless0
      #+NAME: fig: useless0
@@ -419,14 +509,55 @@ int main ( int argc, char ** argv)	{
      #+ATTR_HTML: :width 500px
      [[./img/dotprod/00.dotprod/useless1.png]]
 
+     #+CAPTION: Useless0
+     #+NAME: fig: useless0
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/01.dotprod/useless0.png]]
+
+     #+CAPTION: Useless0
+     #+NAME: fig: useless0
+     #+ATTR_HTML: :width 500px
+     [[./img/dotprod/03.dotprod/useless_unroll.png]]
+
 *  Mini-Applications
 
 ** HACC
+   
+*** Résultat d'analyse : version de base
+
+   #+CAPTION: 'Global Metrics' HACC initial
+   #+NAME: fig: glob_init_hacc
+   #+ATTR_HTML: :width 300px
+   [[./img/HACC/global_init.png]]
+
+   #+CAPTION: Application HACC initial
+   #+NAME: fig: app_init_hacc
+   #+ATTR_HTML: :width 900px
+   [[./img/HACC/application_init.png]]
+
+   #+CAPTION: 'Loops Index' HACC initial
+   #+NAME: fig: loops_init_hacc
+   #+ATTR_HTML: :width 900px
+   [[./img/HACC/loop_index_init.png]]
+
+*** Résultat d'analyse : version finale
+
+   #+CAPTION: 'Global Metrics' HACC final
+   #+NAME: fig: glob_final_hacc
+   #+ATTR_HTML: :width 300px
+   [[./img/HACC/global_last.png]]
+
+   #+CAPTION: Application HACC final
+   #+NAME: fig: app_final_hacc
+   #+ATTR_HTML: :width 900px
+   [[./img/HACC/application_init.png]]
+
+   #+CAPTION: 'Loops Index' HACC final
+   #+NAME: fig: loops_final_hacc
+   #+ATTR_HTML: :width 900px
+   [[./img/HACC/loop_index_final.png]]
 ** miniqmc
 ** NPB3.2.1-MZ
-
-
-*  Suggestions pour MAQAO
 
 *  Conclusion
 
@@ -463,7 +594,6 @@ html en console devient pénible. Une idée était donc de reformater la sortie 
 emacs integrant la prise en charges de fichiers en orgmode. Un parseur a donc été écrit en C++ afin de pouvoir générer un rapport en orgmode à l'aide de la fonction *popen* ainsi qu'une relative
 bonne connaissance du format textuel de *MAQAO* et des informations affichées. 
   
-
 *  Bibliographie
 
 1) http://www.maqao.org/
